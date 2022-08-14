@@ -57,7 +57,7 @@
                                     @if(auth()->user()->avatar_original)
                                         <span style="  font-size: 14px;  font-weight: bolder;">{{auth()->user()->name}}</span>
                                         <img height="40" width="40" src="{{ asset(auth()->user()->avatar_original) }} " style="border-radius: 50px">
-                                    @else 
+                                    @else
                                         <span style="  font-size: 14px;  font-weight: bolder;">{{auth()->user()->name}}</span>
                                         <img height="40" width="40" src="{{asset('frontend/images/user.png')}}" style="border-radius: 50px">
                                     @endif
@@ -83,15 +83,15 @@
                                     </li>
                                     @if(Auth::user()->user_type == 'designer')
                                         <li class="dropdown-item">
-                                            <a href="{{ route('my_store.index',Auth::user()->store_name) }}" class="top-bar-item">{{__('My Store')}} </a> 
+                                            <a href="{{ route('my_store.index',Auth::user()->store_name) }}" class="top-bar-item">{{__('My Store')}} </a>
                                         </li>
-                                        
+
                                         <li class="dropdown-item">
-                                            <a href="{{ route('listings.index') }}" class="top-bar-item">{{__('Listings')}}</a> 
+                                            <a href="{{ route('listings.index') }}" class="top-bar-item">{{__('Listings')}}</a>
                                         </li>
-        
+
                                         <li class="dropdown-item">
-                                            <a href="{{ route('collections.index') }}" class="top-bar-item">{{__('Start Design')}}</a>  
+                                            <a href="{{ route('collections.index') }}" class="top-bar-item">{{__('Start Design')}}</a>
                                         </li>
                                     @endif
                                     <li class="dropdown-item">
@@ -122,8 +122,8 @@
                                 <a href="{{ route('user.register.form') }}" class="top-bar-item">{{__('Registration')}}</a>
                             </li>
                         @endauth
-                        
-                        
+
+
                     </ul>
                 </div>
             </div>
@@ -159,12 +159,12 @@
                                 <div class="image " style="background-image:url('{{ asset('frontend/images/icons/user-placeholder.jpg') }}')"></div>
                         </div>
                         <div class="side-login px-3 pb-3">
-                            
+
                                 <a href="{{ route('user.login.form') }}">
                                     <span style="opacity: 0">(</span>
                                     {{__('Sign In')}}
                                     <span style="opacity: 0">)</span>
-                                </a> 
+                                </a>
                             <a href="{{ route('user.register.form') }}">{{__('Registration')}}</a>
                         </div>
                     @endauth
@@ -175,13 +175,13 @@
                             <a href="{{ route('home') }}" class="{{ areActiveRoutesHome(['home'])}}">
                                 <i class="la la-dashboard"></i>
                                 <span class="category-name">
-                                    {{__('Continue to Shipping')}} 
+                                    {{__('Continue to Shipping')}}
                                 </span>
                             </a>
                         </li>
 
 
-                        @if (Auth::check()) 
+                        @if (Auth::check())
 
                             @if (\App\Models\BusinessSetting::where('type', 'conversation_system')->first()->value == 1)
                                 @php
@@ -205,27 +205,27 @@
                                     <a href="{{ route('user.orders.index') }}" class="{{ areActiveRoutesHome(['user.orders.index','dashboard'])}}">
                                         <i class="la la-file-text" style="font-size: 18px !important"></i>
                                         <span class="category-name">
-                                            {{__('Orders')}} 
+                                            {{__('Orders')}}
                                         </span>
                                     </a>
                                 </li>
                             @endif
-                            
+
                             @if(Auth::user()->user_type == 'designer')
                                 <li>
                                     <a href="{{ route('my_store.index',Auth::user()->store_name) }}" class="{{ areActiveRoutesHome(['my_store.index'])}}">
                                         <i class="fa fa-bookmark" style="font-size: 18px !important"></i>
                                         <span class="category-name">
-                                            {{__('My Store')}} 
+                                            {{__('My Store')}}
                                         </span>
                                     </a>
                                 </li>
-                                
+
                                 <li>
                                     <a href="{{ route('listings.index') }}" class="{{ areActiveRoutesHome(['listings.index'])}}">
                                         <i class="fa fa-list" style="font-size: 18px !important"></i>
                                         <span class="category-name">
-                                            {{__('Listings')}} 
+                                            {{__('Listings')}}
                                         </span>
                                     </a>
                                 </li>
@@ -234,7 +234,7 @@
                                     <a href="{{ route('collections.index') }}" class="{{ areActiveRoutesHome(['collections.index'])}}">
                                         <i class="fa fa-paint-brush" style="font-size: 18px !important"></i>
                                         <span class="category-name">
-                                            {{__('Start Design')}} 
+                                            {{__('Start Design')}}
                                         </span>
                                     </a>
                                 </li>
@@ -247,7 +247,7 @@
                                         {{__('Manage Profile')}}
                                     </span>
                                 </a>
-                            </li>  
+                            </li>
                             <li>
                                 <a href="{{ route('wishlists.index') }}" class="{{ areActiveRoutesHome(['wishlists.index'])}}">
                                     <i class="la la-heart-o" style="font-size: 18px !important"></i>
@@ -260,8 +260,8 @@
                                         @endif
                                     </span>
                                 </a>
-                            </li>  
-                            
+                            </li>
+
                             <li>
                                 <a href="{{ route('calender') }}" class="{{ areActiveRoutesHome(['calender'])}}">
                                     <i class="fa fa-calendar" style="font-size: 18px !important"></i>
@@ -269,26 +269,26 @@
                                         {{__('Calender')}}
                                     </span>
                                 </a>
-                            </li>  
-                            
+                            </li>
+
 
                             @if(Auth::user()->user_type == 'seller')
                                 <li>
                                     <a href="{{ route('user.orders.index') }}" class="{{ areActiveRoutesHome(['user.orders.index'])}}">
                                         <i class="la la-file-text"></i>
                                         <span class="category-name">
-                                            {{__('Orders')}}  
+                                            {{__('Orders')}}
                                         </span>
                                     </a>
-                                </li>  
+                                </li>
                                 <li>
                                     <a href="{{ route('orders.request_commission.seller') }}" >
                                         <i class="la la-dashboard" style="font-size: 18px !important"></i>
                                         <span class="category-name">
-                                            {{__('Commission Requests')}} 
+                                            {{__('Commission Requests')}}
                                         </span>
                                     </a>
-                                </li> 
+                                </li>
                                 <li>
                                     <a href="{{ route('seller.common_questions') }}" class="{{ areActiveRoutesHome(['seller.common_questions'])}}">
                                         <i class="la la-user" style="font-size: 18px !important"></i>
@@ -297,7 +297,7 @@
                                         </span>
                                     </a>
                                 </li>
-                            @endif 
+                            @endif
 
                             @php
                                 $quality_responsible = \App\Models\QualityResponsible::first();
@@ -308,24 +308,24 @@
                                     <img src="{{ asset($quality_responsible->photo) }}" height="75" width="75" style="border-radius: 50px" alt="">
                                     <h5>{{$quality_responsible->name}}</h5>
                                     <div class="mt-3">
-                                        <button onclick="window.open('tel:{{$quality_responsible->phone}}');" class="btn btn-outline-success" style="border-radius: 50px">{{$quality_responsible->phone}} <i class="text-md la la-phone"></i></button> 
+                                        <button onclick="window.open('tel:{{$quality_responsible->phone}}');" class="btn btn-outline-success" style="border-radius: 50px">{{$quality_responsible->phone}} <i class="text-md la la-phone"></i></button>
                                     </div>
                                     <div class="mt-3">
                                         <form method="get" action="https://wa.me/{{$quality_responsible->country_code}}{{substr($quality_responsible->wts_phone,2)}}">
-                                            <button type="submit" class="btn btn-outline-success" style="border-radius: 50px">{{$quality_responsible->wts_phone}} <i class="fa fa-whatsapp"></i></button> 
+                                            <button type="submit" class="btn btn-outline-success" style="border-radius: 50px">{{$quality_responsible->wts_phone}} <i class="fa fa-whatsapp"></i></button>
                                         </form>
                                     </div>
                                 </div>
-                            </div> 
+                            </div>
                         @endif
                     </ul>
-                
+
                 </div>
             </div>
         </div>
     </div>
     <!-- end mobile menu -->
-    
+
     <div class="position-relative logo-bar-area">
         <div class="">
             <div class="container">
@@ -350,23 +350,23 @@
                                     $generalsetting = \App\Models\GeneralSetting::first();
                                 @endphp
                                 @if($generalsetting->logo != null)
-                                    <img src="{{ asset($generalsetting->logo) }}" alt="{{ env('APP_NAME') }}">
+                                    <img src="{{ asset($generalsetting->logo) }}" style=" max-height: 80px;" alt="{{ env('APP_NAME') }}">
                                 @else
                                     <img src="{{ asset('frontend/images/logo/logo.png') }}" alt="{{ env('APP_NAME') }}">
                                 @endif
                             </a>
-                            
+
                             @if(Route::currentRouteName() != 'home' && Route::currentRouteName() != 'categories.all')
                                 <div class="d-none d-xl-block category-menu-icon-box">
                                     <div class="dropdown-toggle navbar-light category-menu-icon" id="category-menu-icon">
                                         <span class="navbar-toggler-icon"></span>
                                     </div>
                                 </div>
-                            @endif 
+                            @endif
                         </div>
                     </div>
                     <div class="col-lg-9 col-4 position-static">
-                        <div class="d-flex w-100"> 
+                        <div class="d-flex w-100">
                             <div class="search-box flex-grow-1 px-4">
                                 <form action="{{ route('search') }}" method="GET">
                                     <div class="d-flex position-relative">
@@ -407,8 +407,8 @@
                                     </div>
                                 </form>
 
-                            </div> 
-                            
+                            </div>
+
                             <div class="logo-bar-icons d-inline-block ml-auto">
                                 <div class="d-inline-block d-lg-none">
                                     <div class="nav-search-box">
@@ -416,7 +416,7 @@
                                             <i class="la la-search la-flip-horizontal d-inline-block nav-box-icon"></i>
                                         </a>
                                     </div>
-                                </div> 
+                                </div>
                                 <div class="d-none d-lg-inline-block">
                                     <div class="nav-wishlist-box" id="wishlist">
                                         <a href="{{ route('wishlists.index') }}" class="nav-box-link">

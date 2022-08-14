@@ -51,7 +51,7 @@
                     <div class="col">
                         <a href="{{ route('home') }}" class="d-block">
                             @if($generalsetting->logo != null)
-                                <img loading="lazy"  src="{{ asset($generalsetting->logo) }}" alt="{{ env('APP_NAME') }}" height="44">
+                                <img loading="lazy"  src="{{ asset($generalsetting->logo) }}" alt="{{ env('APP_NAME') }}" height="80">
                             @else
                                 <img loading="lazy"  src="{{ asset('frontend/images/logo/logo.png') }}" alt="{{ env('APP_NAME') }}" height="44">
                             @endif
@@ -137,16 +137,16 @@
                             </li>
                         </ul>
                     </div>
-                    
-                    <div class="col text-center text-md-left">  
+
+                    <div class="col text-center text-md-left">
                         <a href="{{ route('seller_landingpage') }}" class="btn btn-success btn-icon-left c-white mb-3 mt-2" >
-                            Be a Seller 
-                        </a> 
+                            Be a Seller
+                        </a>
                         <a href="{{ route('designer_landingpage') }}" class="btn btn-purple btn-icon-left c-white">
-                            Be a Designer 
-                        </a>   
+                            Be a Designer
+                        </a>
                     </div>
-                        
+
                 </div>
             </div>
         </div>
