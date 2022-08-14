@@ -1,0 +1,1 @@
+[23-Apr-2022 11:56:33 Africa/Cairo] PHP Fatal error:  Allowed memory size of 268435456 bytes exhausted (tried to allocate 121679872 bytes) in /home/ebtekars/public_html/storage/framework/views/1fb529fb5734a3642cb46325e06a9e89e29fa445.php on line 129
