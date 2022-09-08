@@ -237,9 +237,12 @@ class CheckoutController extends Controller
         ]);
 
         $seller = Seller::where('discount_code',$request->discount_code)->first();
-        if(!$seller){
-            flash(__('Discount Code Invalid'))->error();
-            return redirect()->route('checkout.shipping_info');
+
+        if($request->discount_code != null){
+            if(!$seller){
+                flash(__('Discount Code Invalid'))->error();
+                return redirect()->route('checkout.shipping_info');
+            }
         }
 
         $client_name = $request->client_name ?? null;
