@@ -398,6 +398,12 @@ Route::group(['prefix' =>'admin', 'middleware' => ['auth', 'admin']], function()
 			Route::post('/home_categories/update_status', 'HomeCategoryController@update_status')->name('home_categories.update_status');
 			Route::post('/home_categories/get_subsubcategories_by_category', 'HomeCategoryController@getSubSubCategories')->name('home_categories.get_subsubcategories_by_category');
 		});
+
+
+		//banned_phones
+		Route::resource('banned_phones','BannedPhonesController');
+		Route::get('/banned_phones/destroy/{id}', 'BannedPhonesController@destroy')->name('banned_phones.destroy');
+
 	});
 	// ------------------------------------------  Settings ----------------------------------------- //
 

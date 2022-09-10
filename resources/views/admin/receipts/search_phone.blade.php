@@ -23,4 +23,11 @@
         <h5>{{__('Sellers Orders')}}</h5>
         <b> {{ $sellers_orders }} </b>
     </div>
+    @if($banned_phones)
+        <div class="col-xs-12">
+            <h3 class="text-danger">الرقم محظور</h3>
+            <h5>{{__('Reason')}}</h5>
+            <b> {{ $banned_phones->reason }} </b>
+        </div>
+    @endif
 </div>

@@ -9,6 +9,7 @@ use App\Models\Country;
 use App\Models\ReceiptCompany;
 use App\Models\Receipt_social;
 use App\Models\Receipt_client;
+use App\Models\BannedPhones;
 use App\Models\Order;
 use App\Models\ReceiptCompanyExport;
 use App\Models\DeliveryManOrders;
@@ -52,9 +53,10 @@ class ReceiptCompanyController extends Controller
                                                                         $query->where('phone_number', 'like', '%'.$GLOBALS['phone'].'%')
                                                                                 ->orWhere('phone_number2', 'like', '%'.$GLOBALS['phone'].'%');
                                                                     })->orderBy('created_at','desc')->count();
-        return view('admin.receipts.search_phone',compact('receipt_social','receipt_figures','receipt_company','receipt_client','customers_orders','sellers_orders'));
-    }
 
+        $banned_phones = BannedPhones::where('phone',$phone)->first();
+        return view('admin.receipts.search_phone',compact('receipt_social','receipt_figures','receipt_company','receipt_client','customers_orders','sellers_orders','banned_phones'));
+    }
     public function updatecalling(Request $request)
     {
         $receipt = ReceiptCompany::findOrFail($request->id);

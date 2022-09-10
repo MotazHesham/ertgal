@@ -484,6 +484,9 @@
                                     <li class="{{ areActiveRoutes(['languages.index', 'languages.create', 'languages.store', 'languages.show', 'languages.edit'])}}">
                                         <a class="nav-link" href="{{route('languages.index')}}">{{__('Languages')}}</a>
                                     </li>
+                                    <li class="{{ areActiveRoutes(['banned_phones.index', 'banned_phones.create', 'banned_phones.store', 'banned_phones.show', 'banned_phones.edit'])}}">
+                                        <a class="nav-link" href="{{route('banned_phones.index')}}">{{__('Banned Phones')}}</a>
+                                    </li>
                                 </ul>
                             </li>
                         @endif

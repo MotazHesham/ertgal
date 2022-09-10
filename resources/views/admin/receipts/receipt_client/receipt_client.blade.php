@@ -63,74 +63,54 @@
 	</style>
 </head>
 <body>
-	<div>
+    @php
+        $generalsetting = \App\Models\GeneralSetting::first();
+    @endphp
 
-		@php
-			$generalsetting = \App\Models\GeneralSetting::first();
-		@endphp
+    <div style="page-break-after: always;">
 
-		<div style="background: #eceff4;padding: 1.5rem;">
-			<table>
-				<tr>
-					<td>
-
-                        @if($generalsetting->logo != null)
-                            <img loading="lazy"  src="{{ asset($generalsetting->logo) }}" height="100" style="display:inline-block;">
-                        @else
-                            <img loading="lazy"  src="{{ asset('receipt_logo.png') }}" height="40" style="display:inline-block;">
-                        @endif
-					</td>
-				</tr>
-			</table>
-			<table>
-				<tr>
-					<td style="font-size: 1.2rem;" class="strong">{{ $generalsetting->site_name }}</td>
-					<td class="text-right"></td>
-				</tr>
-				<tr>
-					<td class="gry-color small">{{ $generalsetting->address }}</td>
-					<td class="text-right"></td>
-				</tr>
-				<tr>
-					<td class="gry-color small">Email: {{ $generalsetting->email }}</td>
-				</tr>
-				<tr>
-					<td class="gry-color small" >Phone: {{ $generalsetting->phone }}</td>
-					<td class="text-right small"><span class="gry-color small">Date:</span> <span class=" strong">{{format_Date(strtotime($receipt_client->created_at))}}</span></td>
-				</tr>
-			</table>
-
+		<div style="background: #eceff4;padding: 1.5rem;height:100">
+            <div style="float: right">
+                <div>
+                    @if($generalsetting->logo != null)
+                        <img loading="lazy"  src="{{ asset($generalsetting->logo) }}" height="100" style="display:inline-block;">
+                    @else
+                        <img loading="lazy"  src="{{ asset('receipt_logo.png') }}" height="40" style="display:inline-block;">
+                    @endif
+                </div>
+                <div>Phone: {{ $generalsetting->phone }}</div>
+            </div>
 		</div>
 
+        <div style="clear:both"></div>
 		<div style="padding: 1.5rem;">
+            <h3 style="text-align: center">
+                <span style=" color:red">  رقم الفاتورة</span> <br>
+                <span style="color: red">{{str_replace('receipt-',' ',$receipt_client->order_num)}}</span>
+            </h3>
 			<div class="text-right" style="padding:10px">
-				<span>{{format_Date($receipt_client->date_of_receiving_order)}} </span> <span style="float: right;">: التاريخ</span> <br>
-				<span>{{ $receipt_client->Staff ? $receipt_client->Staff->email : ''}}</span> <span style="float: right;">: الموظف</span> <br>
-				<span style="color: red">{{str_replace('receipt-',' ',$receipt_client->order_num)}}</span> <span style="float: right;color:red">: رقم الفاتورة</span> <br>
 				<span>{{$receipt_client->client_name}}</span> <span style="float: right;">: اسم العميل</span>  <br>
 				<span>{{$receipt_client->phone}}</span> <span style="float: right;">: رقم العميل</span> <br>
-				<span>{{$receipt_client->deposit}}</span> <span style="float: right;">: العربون </span>
 			</div>
 
 			<table class="padding text-left small border-bottom">
 
-			<img src="{{ asset($generalsetting->logo) }}" alt="" style="position: absolute;opacity:0.15;top:180px;">
 				<thead>
 	                <tr class="gry-color" style="background: #eceff4;">
-	                    <th width="35%">الصنف</th>
-	                    <th width="15%">الكمية</th>
-	                    <th width="10%">السعر</th>
-	                    <th width="15%" class="text-right">الأجمالي</th>
+	                    <th >الأجمالي</th>
+	                    <th  >السعر</th>
+	                    <th  >الكمية</th>
+	                    <th  >الصنف</th>
 	                </tr>
 				</thead>
 				<tbody class="strong">
 	                @foreach ($receipt_client->receipt_client_products as $key => $product)
 		                @if ($receipt_client->receipt_client_products != null)
 							<tr class="">
-								<td>{{ $product->description }}</td>
-								<td class="gry-color">{{ $product->quantity }}</td>
-								<td class="gry-color currency">{{ $product->cost }} @if($product->cost != null) EGP @endif</td>
 			                    <td class="text-right currency">{{ single_price($product->total) }} </td>
+								<td class="gry-color currency">{{ $product->cost }} @if($product->cost != null) EGP @endif</td>
+								<td class="gry-color">{{ $product->quantity }}</td>
+								<td>{{ $product->description }}</td>
 							</tr>
 						@endif
 					@endforeach
@@ -143,7 +123,89 @@
 		@endphp
 
 	    <div style="padding:0 1.5rem;">
-	        <table style="width: 40%;margin-left:auto;" class="text-right sm-padding small strong">
+	        <table style="width: 40%;" class="text-left sm-padding small strong">
+		        <tbody>
+		            <tr>
+		                <td>+ {{single_price($receipt_client->total)}}</td>
+						<th width="35%" class="gry-color text-right">إجمالي</th>
+		            </tr>
+		            <tr>
+		                <td>- {{$receipt_client->deposit}}</td>
+		                <th width="35%" class="gry-color text-right">العربون</th>
+		            </tr>
+		            <tr>
+		                <td>- {{$discount}}</td>
+		                <th width="35%" class="gry-color text-right">الخصم</th>
+		            </tr>
+
+			        <tr>
+
+			            <td class="currency">= {{ single_price($receipt_client->total - $discount - $receipt_client->deposit) }}</td>
+			            <th width="35%" class="gry-color text-right">أجمالي الحساب</th>
+			        </tr>
+		        </tbody>
+		    </table>
+	    </div>
+
+
+	</div>
+    <div style="page-break-after: always;">
+
+		<div style="background: #eceff4;padding: 1.5rem;height:100">
+            <div style="float: right">
+                <div>
+                    @if($generalsetting->logo != null)
+                        <img loading="lazy"  src="{{ asset($generalsetting->logo) }}" height="100" style="display:inline-block;">
+                    @else
+                        <img loading="lazy"  src="{{ asset('receipt_logo.png') }}" height="40" style="display:inline-block;">
+                    @endif
+                </div>
+                <div>Phone: {{ $generalsetting->phone }}</div>
+            </div>
+		</div>
+
+        <div style="clear:both"></div>
+		<div style="padding: 1.5rem;">
+            <h3 style="text-align: center">
+                <span style=" color:red">  رقم الفاتورة</span> <br>
+                <span style="color: red">{{str_replace('receipt-',' ',$receipt_client->order_num)}}</span>
+            </h3>
+			<div class="text-right" style="padding:10px">
+				<span>{{$receipt_client->client_name}}</span> <span style="float: right;">: اسم العميل</span>  <br>
+				<span>{{$receipt_client->phone}}</span> <span style="float: right;">: رقم العميل</span> <br>
+			</div>
+
+			<table class="padding text-left small border-bottom">
+
+				<thead>
+	                <tr class="gry-color" style="background: #eceff4;">
+	                    <th >الأجمالي</th>
+	                    <th  >السعر</th>
+	                    <th  >الكمية</th>
+	                    <th  >الصنف</th>
+	                </tr>
+				</thead>
+				<tbody class="strong">
+	                @foreach ($receipt_client->receipt_client_products as $key => $product)
+		                @if ($receipt_client->receipt_client_products != null)
+							<tr class="">
+			                    <td class="text-right currency">{{ single_price($product->total) }} </td>
+								<td class="gry-color currency">{{ $product->cost }} @if($product->cost != null) EGP @endif</td>
+								<td class="gry-color">{{ $product->quantity }}</td>
+								<td>{{ $product->description }}</td>
+							</tr>
+						@endif
+					@endforeach
+	            </tbody>
+			</table>
+		</div>
+
+		@php
+			$discount = round( ( ($receipt_client->total/100) * $receipt_client->discount ) , 2);
+		@endphp
+
+	    <div style="padding:0 1.5rem;">
+	        <table style="width: 40%;" class="text-left sm-padding small strong">
 		        <tbody>
 		            <tr>
 		                <td>+ {{single_price($receipt_client->total)}}</td>
