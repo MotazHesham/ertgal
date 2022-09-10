@@ -59,6 +59,15 @@
                     </div>
                 </div>
                 <div class="box-inline pad-rgt pull-left">
+                    <div class="select" style="min-width: 150px;">
+                        <select class="form-control demo-select2" name="special" id="type" onchange="sort_products()">
+                            <option value="">Sort by Special</option>
+                            <option value="1"  @isset($special) @if($special == 1) selected @endif @endisset>Special</option>
+                            <option value="0"  @isset($special) @if($special == 0) selected @endif @endisset>Not Special</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="box-inline pad-rgt pull-left">
                     <div class="" style="min-width: 200px;">
                         <input type="text" class="form-control" id="search" name="search"@isset($sort_search) value="{{ $sort_search }}" @endisset placeholder="{{__('Product Name')}}">
                     </div>
@@ -79,6 +88,7 @@
                 <tr>
                     <th>#</th>
                     <th width="20%">{{__('Name')}}</th>
+                    <th></th>
                     <th>{{__('Num of Sale')}}</th>
                     <th>{{__('Total Stock')}}</th>
                     <th>{{__('Base Price')}}</th>
@@ -104,6 +114,13 @@
                                     {{ \App\Models\Listing::find($product->listing_id)->user->email ?? ''}}
                                 @endif
                             </a>
+                        </td>
+                        <td>
+                            @if($product->special == 1)
+                                <span class="badge badge-dark">Special</span>
+                            @else
+                                <span class="badge badge-mint">Non Special</span>
+                            @endif
                         </td>
                         <td>{{ $product->num_of_sale }} {{__('times')}}</td>
                         <td>
@@ -131,14 +148,14 @@
                         <td><label class="switch">
                                 <input onchange="update_featured(this)" value="{{ $product->id }}" type="checkbox" <?php if($product->featured == 1) echo "checked";?> >
                                 <span class="slider round"></span></label></td>
-                        
+
                         <td>
                             <div class="btn-group dropdown">
                                 <button class="btn btn-primary dropdown-toggle dropdown-toggle-icon" data-toggle="dropdown" type="button">
                                     {{__('Actions')}} <i class="dropdown-caret"></i>
                                 </button>
-                                <ul class="dropdown-menu dropdown-menu-right">  
-                                    <li><a href="{{route('products.edit', encrypt($product->id))}}"><i class="fa fa-edit" style="color: #2E86C1"></i>{{__('Edit')}}</a></li> 
+                                <ul class="dropdown-menu dropdown-menu-right">
+                                    <li><a href="{{route('products.edit', encrypt($product->id))}}"><i class="fa fa-edit" style="color: #2E86C1"></i>{{__('Edit')}}</a></li>
                                     <li><a onclick="confirm_modal('{{route('products.destroy', $product->id)}}');"><i class="fa fa-trash" style="color: #E74C3C"></i>{{__('Delete')}}</a></li>
                                     <li><a href="{{route('products.duplicate', $product->id)}}"><i class="fa fa-clone" style="color: hsl(295, 41%, 45%)"></i>{{__('Duplicate')}}</a></li>
                                 </ul>
@@ -168,7 +185,7 @@
             </div>
             <div class="modal-body">
                 <form action="{{route('products.update_stock')}}" class="form-horizontal"  method="post">
-                    @csrf  
+                    @csrf
                     <div class="form-group" >
 						<label class="col-lg-2 control-label">{{__('Category')}}</label>
 						<div class="col-lg-7">
@@ -182,7 +199,7 @@
 					<div class="form-group" >
 						<label class="col-lg-2 control-label">{{__('Sub Category')}}</label>
 						<div class="col-lg-7">
-							<select class="form-control demo-select2-placeholder" name="subcategory_id"> 
+							<select class="form-control demo-select2-placeholder" name="subcategory_id">
                                 <option value="">{{__('Choose SubCategory')}}</option>
                                 @foreach($subcategories as $category)
                                     <option value="{{$category->id}}">{{__($category->name)}}</option>
@@ -193,7 +210,7 @@
 					<div class="form-group" >
 						<label class="col-lg-2 control-label">{{__('Sub SubCategory')}}</label>
 						<div class="col-lg-7">
-							<select class="form-control demo-select2-placeholder" name="subsubcategory_id" > 
+							<select class="form-control demo-select2-placeholder" name="subsubcategory_id" >
                                 <option value="">{{__('Choose Sub SubCategory')}}</option>
                                 @foreach($subsubcategories as $category)
                                     <option value="{{$category->id}}">{{__($category->name)}}</option>

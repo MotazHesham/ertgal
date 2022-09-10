@@ -126,6 +126,7 @@ class CheckoutController extends Controller
                         'email_sent' => $cartItem->email_sent,
                         'quantity' => $cartItem->quantity,
                         'price' => $cartItem->price,
+                        'chosen_photo' => $cartItem->chosen_photo,
                         'total_cost' => $cartItem->total_cost,
                         'photos' => $cartItem->photos,
                         'photos_note' => $cartItem->photos_note,

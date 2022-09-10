@@ -1,7 +1,7 @@
 @extends('frontend.layouts.app')
 
 @section('styles')
-<style> 
+<style>
     a:hover,a:focus{
         text-decoration: none;
         outline: none;
@@ -73,7 +73,7 @@
         padding-left: 25px;
         border-left: 1px dashed #8c8c8c;
     }
-    
+
     .badge-default {
         background-color: #e9eeef;
         color: #7a878e;
@@ -87,7 +87,7 @@
     <section class="gry-bg py-4 profile">
         <div class="container">
             <div class="row cols-xs-space cols-sm-space cols-md-space">
-                <div class="col-lg-3 d-none d-lg-block">  
+                <div class="col-lg-3 d-none d-lg-block">
                     @if(Auth::user()->user_type == 'seller')
                         @include('frontend.inc.seller_side_nav')
                     @elseif(Auth::user()->user_type == 'customer')
@@ -117,23 +117,23 @@
                                     </div>
                                 </div>
                             </div>
-                        </div> 
-                        
+                        </div>
 
-                        <form class="mt-3" id="sort_orders" action="" method="GET"> 
+
+                        <form class="mt-3" id="sort_orders" action="" method="GET">
 
                             <div class="row justify-content-md-center">
                                 <div class="col-md-3 text-center">
                                     <span class="badge badge-default">{{__('Order Code')}}</span>
                                     <input type="text" class="form-control" id="code" name="code" @isset($code) value="{{ $code }}" @endisset >
                                 </div>
-                                
+
                                 <div class="col-md-3 text-center">
                                     <span class="badge badge-default">حالة الطلب</span>
                                     <select class="form-control demo-select2" name="delivery_status" id="delivery_status" onchange="sort_orders()">
-                                        <option value="">{{__('Delivery Status')}}</option> 
+                                        <option value="">{{__('Delivery Status')}}</option>
                                         <option value="pending"   @isset($delivery_status) @if($delivery_status == 'pending') selected @endif @endisset>{{__('Pending')}}</option>
-                                        <option value="on_review"   @isset($delivery_status) @if($delivery_status == 'on_review') selected @endif @endisset>{{__('On review')}}</option> 
+                                        <option value="on_review"   @isset($delivery_status) @if($delivery_status == 'on_review') selected @endif @endisset>{{__('On review')}}</option>
                                         <option value="on_delivery"   @isset($delivery_status) @if($delivery_status == 'on_delivery') selected @endif @endisset>{{__('On delivery')}}</option>
                                         <option value="delivered"   @isset($delivery_status) @if($delivery_status == 'delivered') selected @endif @endisset>{{__('Delivered')}}</option>
                                         <option value="delay"   @isset($delivery_status) @if($delivery_status == 'delay') selected @endif @endisset>{{__('Delay')}}</option>
@@ -142,48 +142,48 @@
                                 </div>
                             </div>
 
-                            <div class="row justify-content-md-center"> 
+                            <div class="row justify-content-md-center">
 
-                                {{-- start date --}} 
-                                <div class="col-md-3 text-center" style="margin-bottom:10px"> 
+                                {{-- start date --}}
+                                <div class="col-md-3 text-center" style="margin-bottom:10px">
                                     <span class="badge badge-default">من تاريخ الأضافة</span>
                                     <input type="text" @isset($from) value="{{format_date($from)}}" @endisset  disabled id="from_date_text" class="form-control @isset($from) isset @endisset" style="position: relative;">
-                                    <input type="date" onkeydown="return false" class="form-control my_custom_date_input"  name="from" id="from_date" >   
+                                    <input type="date" onkeydown="return false" class="form-control my_custom_date_input"  name="from" id="from_date" >
                                 </div>
 
-                                
+
                                 {{-- end date --}}
-                                <div class="col-md-3 text-center" style="margin-bottom:10px"> 
+                                <div class="col-md-3 text-center" style="margin-bottom:10px">
                                     <span class="badge badge-default">الي تاريخ الأضافة</span>
                                     <input type="text" @isset($to) value="{{format_date($to)}}" @endisset  disabled id="to_date_text" class="form-control @isset($to) isset @endisset" style="position: relative;">
-                                    <input type="date" onkeydown="return false" class="form-control my_custom_date_input"  name="to" id="to_date" >   
+                                    <input type="date" onkeydown="return false" class="form-control my_custom_date_input"  name="to" id="to_date" >
                                 </div>
-                                
+
                                 <div class="col-md-2 text-center">
                                     <div>&nbsp;</div>
                                     <button type="submit" name="search" class="btn btn-success">{{__('Search')}}</button>
                                     <button type="submit" name="download" class="btn btn-info">{{__('Download')}}</button>
-                                </div>  
-                            </div> 
-                        </form> 
+                                </div>
+                            </div>
+                        </form>
 
                         <!-- Order history table -->
-                        <div style="background: #fff"> 
-                            <div class="pagination-wrapper py-4"> 
+                        <div style="background: #fff">
+                            <div class="pagination-wrapper py-4">
                                 <div class="row justify-content-md-center">
-                                    
+
                                     <div class="col col-md-6">
                                         {{ $orders->links() }}
                                     </div>
                                 </div>
-                            </div>  
+                            </div>
                             <div class="container">
                                 <div class="row">
                                     <div class="col-md-12">
 
                                         @if (count($orders) > 0)
-                                            @foreach ($orders as $key => $order) 
-                                            <div class="panel-group" id="accordion2" role="tablist" aria-multiselectable="true"> 
+                                            @foreach ($orders as $key => $order)
+                                            <div class="panel-group" id="accordion2" role="tablist" aria-multiselectable="true">
                                                 <div class="panel panel-default">
                                                     <div class="panel-heading" role="tab" id="headingOne{{$order->id}}">
                                                         <h4 class="panel-title">
@@ -192,14 +192,14 @@
                                                                     <div class=" col-md-4">{{$order->code}}</div>
                                                                     <div class=" col-md-4">{{ __(ucfirst(str_replace('_', ' ', $order->delivery_status))) }}</div>
                                                                     <div class=" col-md-4">{{ format_date_time(strtotime($order->created_at)) }}</div>
-                                                                </div> 
+                                                                </div>
                                                             </a>
                                                         </h4>
                                                     </div>
                                                     <div id="collapseOne{{$order->id}}" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne{{$order->id}}">
                                                         <div class="panel-body">
-                                                            
-                                                            <div style="box-shadow: 2px 2px 10px 0px rgb(124, 201, 162);padding-bottom:20px"> 
+
+                                                            <div style="box-shadow: 2px 2px 10px 0px rgb(124, 201, 162);padding-bottom:20px">
                                                                 <div class="pt-4">
                                                                     @if($order->delivery_status != 'cancel')
                                                                     <ul class="process-steps clearfix">
@@ -230,24 +230,24 @@
                                                                     </ul>
                                                                     @endif
                                                                 </div>
-                                                                
+
                                                                 <div class="card mt-4">
                                                                     <div class="card-body pb-0">
                                                                         <div class="row">
-                                                                            <div class="col-md-6"> 
+                                                                            <div class="col-md-6">
                                                                                 <div>
                                                                                     @if($order->delivery_status == 'pending')
                                                                                         <a class="btn btn-info" href="{{route('user.orders.edit',$order->id)}}" title="{{__('Edit Order')}}"><i class="fa fa-edit"></i></a>
                                                                                         <a class="btn btn-danger c-white" style="cursor: pointer" onclick="confirm_modal('{{route('user.orders.destroy',$order->id)}}');" title="{{__('Delete Order')}}"><i class="fa fa-trash"></i></a>
                                                                                     @endif
-                                                                                
+
                                                                                     <a class="btn btn-success" target="_blanc" href="{{ route('user.orders.print', $order->id) }}" title="{{__('Print')}}"><i class="fa fa-print"></i></a>
                                                                                 </div>
                                                                                 <div>
-                                                                                    <span class="badge badge-default">{{__('Phone Number') }}</span> {{ $order->phone_number }} , {{ $order->phone_number2 }} 
+                                                                                    <span class="badge badge-default">{{__('Phone Number') }}</span> {{ $order->phone_number }} , {{ $order->phone_number2 }}
                                                                                 </div>
                                                                                 <div>
-                                                                                    <span class="badge badge-default">{{__('Address') }}</span>{{ $order->shipping_country_name}} , {{ $order->shipping_address }}  
+                                                                                    <span class="badge badge-default">{{__('Address') }}</span>{{ $order->shipping_country_name}} , {{ $order->shipping_address }}
                                                                                 </div>
                                                                             </div>
                                                                             <div class="col-md-6">
@@ -257,17 +257,17 @@
                                                                                     </div>
                                                                                     <div>
                                                                                         @if($order->discount)
-                                                                                            <span class="badge badge-success">{{__('Discount')}} {{ single_price($order->discount ) }} </span> 
+                                                                                            <span class="badge badge-success">{{__('Discount')}} {{ single_price($order->discount ) }} </span>
                                                                                         @endif
                                                                                     </div>
                                                                                     <div>
                                                                                         @if($order->discount_code)
-                                                                                            <span class="badge badge-info">كود الخصم {{ $order->discount_code }} </span> 
+                                                                                            <span class="badge badge-info">كود الخصم {{ $order->discount_code }} </span>
                                                                                         @endif
                                                                                     </div>
                                                                                 </div>
                                                                                 <table class="table details-table">
-                                                                                    <tbody> 
+                                                                                    <tbody>
                                                                                         <tr>
                                                                                             <th>{{__('Subtotal')}}</th>
                                                                                             <td class="text-right">
@@ -282,32 +282,32 @@
                                                                                         </tr>
                                                                                         <tr>
                                                                                             <th>
-                                                                                                <span class="strong-600">مجموع بعد الخصم</span> 
+                                                                                                <span class="strong-600">مجموع بعد الخصم</span>
                                                                                             </th>
                                                                                             <td class="text-right">
-                                                                                                <strong><span>={{ single_price($order->required_to_pay + $order->extra_commission + $order->shipping_country_cost) }}</span></strong> 
+                                                                                                <strong><span>={{ single_price($order->required_to_pay + $order->extra_commission + $order->shipping_country_cost) }}</span></strong>
                                                                                             </td>
-                                                                                        </tr> 
+                                                                                        </tr>
                                                                                     </tbody>
                                                                                 </table>
                                                                             </div>
                                                                         </div>
                                                                     </div>
-                                                                </div>    
+                                                                </div>
                                                                 @foreach($order->orderDetails as $orderDetail)
                                                                     <div class="container mb-3">
                                                                         <div class="row" style="margin: 4%; box-shadow: 1px 1px 6px #678996;border-radius:27px; padding: 7px;">
                                                                             <div class="col-md-3">
-                                                                                <img  src="@if ($orderDetail->product != null) {{asset($orderDetail->product->thumbnail_img)}} @endif" width="80" height="80" />
+                                                                                <img  src="@if ($orderDetail->product != null) {{asset($orderDetail->chosen_photo ?? $orderDetail->product->thumbnail_img)}} @endif" width="80" height="80" />
                                                                             </div>
                                                                             <div class="col-md-9">
                                                                                 <div class="row">
                                                                                     <div class="col my-auto">
-                                                                                        <h6 class="mb-0"> 
+                                                                                        <h6 class="mb-0">
                                                                                             @if ($orderDetail->product != null)
                                                                                                 <a href="{{ route('product', $orderDetail->product->slug) }}" target="_blank">
-                                                                                                    {{ $orderDetail->product->name }} 
-                                                                                                    @if ($orderDetail->variation != null) 
+                                                                                                    {{ $orderDetail->product->name }}
+                                                                                                    @if ($orderDetail->variation != null)
                                                                                                         ({{$orderDetail->variation}})
                                                                                                     @endif
                                                                                                 </a>
@@ -315,8 +315,8 @@
                                                                                                 <strong>{{ __('Product Unavailable') }}</strong>
                                                                                             @endif
                                                                                         </h6>
-                                                                                    </div> 
-                                                                                    <div class="col my-auto"> <h6>{{__('Qty')}} : {{ $orderDetail->quantity }}</h6></div> 
+                                                                                    </div>
+                                                                                    <div class="col my-auto"> <h6>{{__('Qty')}} : {{ $orderDetail->quantity }}</h6></div>
                                                                                     <div class="col my-auto">
                                                                                         <h6 class="mb-0">{{single_price($orderDetail->total_cost)}}</h6>
                                                                                     </div>
@@ -324,10 +324,10 @@
                                                                                         @if($order->delivery_status == 'pending')
                                                                                             <a class="btn btn-light quick-view" title="Edit Product" href="{{route('user.orders.products.edit',$orderDetail->id)}}">
                                                                                                 <i class="fa  fa-edit"></i>
-                                                                                            </a> 
+                                                                                            </a>
                                                                                             <a class="btn btn-light quick-view" title="Delete Product" onclick="confirm_modal('{{route('user.orders.products.destroy',$orderDetail->id)}}');"  >
                                                                                                 <i class="fa  fa-trash"></i>
-                                                                                            </a> 
+                                                                                            </a>
                                                                                         @endif
                                                                                         <button class="btn quick-view" title="Quick view" onclick="show_details({{ $orderDetail->id }})">
                                                                                             <i class="la la-eye"></i>
@@ -335,18 +335,18 @@
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
-                                                                        </div> 
+                                                                        </div>
                                                                     </div>
-                                                                @endforeach 
+                                                                @endforeach
                                                             </div>
-                                                            
+
                                                         </div>
                                                     </div>
-                                                </div> 
+                                                </div>
                                             </div>
-                                            @endforeach 
-                                        @endif 
-                                    
+                                            @endforeach
+                                        @endif
+
                                     </div>
                                 </div>
                             </div>
@@ -355,7 +355,7 @@
                                     {{ $orders->links() }}
                                 </ul>
                             </div>
-                        </div> 
+                        </div>
 
                     </div>
                 </div>
@@ -394,15 +394,15 @@
 @section('script')
     <script type="text/javascript">
 
-        $(document).ready(function () {  
-            $('.order-card').hover(function(){ 
-                var order_id = $(this).data('order_id'); 
+        $(document).ready(function () {
+            $('.order-card').hover(function(){
+                var order_id = $(this).data('order_id');
                 $('#order-card-actions-'+order_id).css('top','10px');
-            });  
-            $('.order-card').mouseleave(function(){ 
-                var order_id = $(this).data('order_id');  
+            });
+            $('.order-card').mouseleave(function(){
+                var order_id = $(this).data('order_id');
                 $('#order-card-actions-'+order_id).css('top','-30px');
-            });  
+            });
         });
 
         function sort_orders(el){
@@ -447,7 +447,7 @@
                 }
             });
         });
-        
+
         $('input[name="free_shipping"]').on('change', function() {
             if($('input[name="free_shipping"]').is(':checked')){
                 $('#free_Shipping_reason_row').css('display', 'inline');

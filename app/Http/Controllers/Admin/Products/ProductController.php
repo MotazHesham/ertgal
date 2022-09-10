@@ -64,7 +64,7 @@ class ProductController extends Controller
         return 0;
     }
 
-    public function update_stock(Request $request){ 
+    public function update_stock(Request $request){
         $products = Product::where('category_id',$request->category_id);
         if($request->has('subcategory_id') && $request->subcategory_id != null ){
             $products = $products->where('subcategory_id',$request->subcategory_id);
@@ -75,10 +75,10 @@ class ProductController extends Controller
 
         $products = $products->get();
 
-        if($products->count() < 1){ 
+        if($products->count() < 1){
             flash(__('No Products Found'))->error();
             return back();
-        } 
+        }
 
         foreach($products as $product){
             $product->unit = $request->unit;
@@ -96,7 +96,7 @@ class ProductController extends Controller
             }
         }
 
-        
+
         flash(__('Stock Updated Successfully'))->success();
 
         return redirect()->route('products.index');
@@ -106,7 +106,7 @@ class ProductController extends Controller
     {
         $product = Product::findOrFail($request->id);
         $product->published = $request->status;
-        
+
 
         $product->save();
         return 1;
@@ -195,6 +195,7 @@ class ProductController extends Controller
         $sort_subcategories = null;
         $sort_subsubcategories = null;
         $featured = null;
+        $special = null;
 
         $products = Product::with('stocks');
 
@@ -214,6 +215,10 @@ class ProductController extends Controller
             $products = $products->where('featured', $request->featured);
             $featured = $request->featured;
         }
+        if ($request->special != null){
+            $products = $products->where('special', $request->special);
+            $special = $request->special;
+        }
         if ($request->search != null){
             $products = $products
                         ->where('name', 'like', '%'.$request->search.'%');
@@ -221,7 +226,7 @@ class ProductController extends Controller
         }
 
         $products = $products->where('digital', 0)->orderBy('created_at', 'desc')->paginate(10);
-        return view($this->view . 'index', compact('products', 'sort_search','featured' ,
+        return view($this->view . 'index', compact('products', 'sort_search','featured' ,'special',
                                             'sort_categories', 'sort_subcategories' , 'sort_subsubcategories',
                                             'categories', 'subcategories','subsubcategories'));
     }
@@ -248,11 +253,11 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        if($request->description == null){ 
+        if($request->description == null){
             flash('حقل الوصف مطلوب')->error();
             return back();
         }
-        
+
         $product = new Product;
         $product->name = $request->name;
         $product->added_by = $request->added_by;
@@ -261,6 +266,7 @@ class ProductController extends Controller
         $product->subcategory_id = $request->subcategory_id;
         $product->subsubcategory_id = $request->subsubcategory_id;
         $product->brand_id = $request->brand_id;
+        $product->special = $request->special;
         $product->current_stock = $request->current_stock;
         $product->barcode = $request->barcode;
 
@@ -331,11 +337,11 @@ class ProductController extends Controller
 
         $product->save();
 
-            
+
         if($request->hasFile('pdf')){
             $product->pdf = $request->pdf->store('uploads/products/pdf');
         }
-        
+
         $photos = array();
 
         if($request->hasFile('photos')){
@@ -364,7 +370,7 @@ class ProductController extends Controller
 
         $product->thumbnail_img = $q ;
         $product->featured_img = $q ;
-        $product->flash_deal_img = $q ;	
+        $product->flash_deal_img = $q ;
         $product->meta_img = $q ;
 
         //combinations start
@@ -434,7 +440,7 @@ class ProductController extends Controller
 
         flash(__('Product has been inserted successfully'))->success();
         return redirect()->route('products.index');
-        
+
     }
 
     /**
@@ -464,7 +470,7 @@ class ProductController extends Controller
         $attributes = Attribute::all();
         return view($this->view . 'edit', compact('product', 'categories', 'tags','brands','colors','attributes'));
     }
-    
+
     /**
      * Update the specified resource in storage.
      *
@@ -480,6 +486,7 @@ class ProductController extends Controller
         $product->subcategory_id = $request->subcategory_id;
         $product->subsubcategory_id = $request->subsubcategory_id;
         $product->brand_id = $request->brand_id;
+        $product->special = $request->special;
         $product->current_stock = $request->current_stock;
         $product->barcode = $request->barcode;
 
@@ -516,7 +523,7 @@ class ProductController extends Controller
 
         $product->thumbnail_img = $q ;
         $product->featured_img = $q ;
-        $product->flash_deal_img = $q ;	
+        $product->flash_deal_img = $q ;
         $product->meta_img = $q ;
 
         $product->unit = $request->unit;

@@ -77,7 +77,7 @@
                             </div>
                         </div>
                     </div>
-                @endif 
+                @endif
 
                 <hr>
 
@@ -161,7 +161,7 @@
                             <hr>
                         @endif
 
-                        @if ($has_unit_attribute) 
+                        @if ($has_unit_attribute)
                             <input type="hidden" name="quantity" class="form-control input-number text-center" placeholder="1" value="1" min="1" max="10">
                         @else
                             <div class="row no-gutters">
@@ -192,8 +192,8 @@
                                     </div>
                                 </div>
                             </div>
-                        
-                        @endif    
+
+                        @endif
                         <hr>
                     @endif
 
@@ -210,102 +210,106 @@
                         </div>
                     </div>
 
+                    @if($product->special)
 
-                    <div class="form-box bg-white mt-4">
-                        <div class="form-box-title px-3 py-2">
-                            {{__('Images To Print in Product')}}
-                        </div>
-                        <div class="form-box-content p-3">
-                            <div id="product-images">
-                                <div class="row">
-                                    <div class="col-md-2">
-                                        <label>{{__('Main Images')}}</label>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <input type="file" name="photos[]" id="photos-1" class="custom-input-file custom-input-file--4" data-multiple-caption="{count} files selected" accept="image/*" />
-                                        <label for="photos-1" class="mw-100 mb-3">
-                                            <span></span>
-                                            <strong>
-                                                <i class="fa fa-upload"></i>
-                                                {{__('Choose image')}}
-                                            </strong>
-                                        </label>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <input type="text" name="photos_note[]" class="form-control" placeholder="ملحوظة علي الصورة">
-                                    </div>
-                                    
-                                </div>
-                            </div>
-                            <div class="text-right">
-                                <button type="button" class="btn btn-info mb-3" onclick="add_more_slider_image()">{{ __('Add More') }}</button>
-                            </div>
-                            
-                        </div>
-                    </div>
-
-                    @if(auth()->check() && auth()->user()->user_type == 'seller')
                         <div class="form-box bg-white mt-4">
                             <div class="form-box-title px-3 py-2">
-                                {{__('Specification')}}
+                                {{__('Images To Print in Product')}}
+                            </div>
+                            <div class="form-box-content p-3">
+                                <div id="product-images">
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <label>{{__('Main Images')}}</label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <input type="file" name="photos[]" id="photos-1" class="custom-input-file custom-input-file--4" data-multiple-caption="{count} files selected" accept="image/*" />
+                                            <label for="photos-1" class="mw-100 mb-3">
+                                                <span></span>
+                                                <strong>
+                                                    <i class="fa fa-upload"></i>
+                                                    {{__('Choose image')}}
+                                                </strong>
+                                            </label>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <input type="text" name="photos_note[]" class="form-control" placeholder="ملحوظة علي الصورة">
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="text-right">
+                                    <button type="button" class="btn btn-info mb-3" onclick="add_more_slider_image()">{{ __('Add More') }}</button>
+                                </div>
+
+                            </div>
+                        </div>
+
+
+                        @if(auth()->check() && auth()->user()->user_type == 'seller')
+                            <div class="form-box bg-white mt-4">
+                                <div class="form-box-title px-3 py-2">
+                                    {{__('Specification')}}
+                                </div>
+                                <div class="form-box-content p-3">
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <label>{{__('PDF')}}</label>
+                                        </div>
+                                        <div class="col-md-10">
+                                            <input type="file" name="pdf" id="file-6" class="custom-input-file custom-input-file--4" data-multiple-caption="{count} files selected" accept="pdf/*" />
+                                            <label for="file-6" class="mw-100 mb-3">
+                                                <span></span>
+                                                <strong>
+                                                    <i class="fa fa-upload"></i>
+                                                    {{__('Choose PDF')}}
+                                                </strong>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <label>{{__('Link')}}</label>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <input type="text" class="form-control mb-3" id="link" name="link" value="{{old('link')}}">
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <label>{{__('File Sent To Email')}}</label>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <label class="switch" style="margin-top:5px;">
+                                                <input type="checkbox" name="file_sent">
+                                                <span class="slider round"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
+
+                        <div class="form-box bg-white mt-4">
+                            <div class="form-box-title px-3 py-2">
+                                {{__('Description')}}
                             </div>
                             <div class="form-box-content p-3">
                                 <div class="row">
                                     <div class="col-md-2">
-                                        <label>{{__('PDF')}}</label>
+                                        <label>{{__('Description')}}</label>
                                     </div>
                                     <div class="col-md-10">
-                                        <input type="file" name="pdf" id="file-6" class="custom-input-file custom-input-file--4" data-multiple-caption="{count} files selected" accept="pdf/*" />
-                                        <label for="file-6" class="mw-100 mb-3">
-                                            <span></span>
-                                            <strong>
-                                                <i class="fa fa-upload"></i>
-                                                {{__('Choose PDF')}}
-                                            </strong>
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-2">
-                                        <label>{{__('Link')}}</label>
-                                    </div>
-                                    <div class="col-md-8">
-                                        <input type="text" class="form-control mb-3" id="link" name="link" value="{{old('link')}}">
-                                    </div>
-                                </div>
-                                
-                                <div class="row">
-                                    <div class="col-md-2">
-                                        <label>{{__('File Sent To Email')}}</label>
-                                    </div>
-                                    <div class="col-md-2">
-                                        <label class="switch" style="margin-top:5px;">
-                                            <input type="checkbox" name="file_sent">
-                                            <span class="slider round"></span>
-                                        </label>
+                                        <div class="mb-3">
+                                            <textarea rows="8" cols="50"  name="description">{{old('description')}}</textarea>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+
                     @endif
-                    
-                    <div class="form-box bg-white mt-4">
-                        <div class="form-box-title px-3 py-2">
-                            {{__('Description')}}
-                        </div>
-                        <div class="form-box-content p-3">
-                            <div class="row">
-                                <div class="col-md-2">
-                                    <label>{{__('Description')}}</label>
-                                </div>
-                                <div class="col-md-10">
-                                    <div class="mb-3">
-                                        <textarea rows="8" cols="50"  name="description">{{old('description')}}</textarea>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
 
                     <div class="d-table width-100 mt-3">
                         <div class="d-table-cell">

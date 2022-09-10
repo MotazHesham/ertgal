@@ -42,7 +42,7 @@
                                     <tr class="cart-item">
                                         <td class="product-image">
                                             <a href="#" class="mr-3">
-                                                <img loading="lazy"  src="{{ asset($product->thumbnail_img) }}">
+                                                <img loading="lazy"  src="{{ asset($cartItem->chosen_photo ?? $product->thumbnail_img) }}">
                                             </a>
                                         </td>
 
@@ -72,7 +72,7 @@
                                                 <i class="la la-trash"></i>
                                             </a>
                                         </td>
-                                        
+
                                     </tr>
                                 @endforeach
                             </tbody>
@@ -103,4 +103,4 @@
             @include('frontend.partials.cart_summary')
         </div>
     </div>
-</div> 
+</div>

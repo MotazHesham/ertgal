@@ -57,6 +57,15 @@
 							</select>
 						</div>
 					</div>
+					<div class="form-group" id="brand">
+						<label class="col-lg-2 control-label">Special</label>
+						<div class="col-lg-7">
+							<select class="form-control demo-select2-placeholder" name="special" id="special" required>
+                                <option value="0">Non Special</option>
+                                <option value="1">Special</option>
+							</select>
+						</div>
+					</div>
 					<div class="form-group">
 						<label class="col-lg-2 control-label">{{__('Unit')}}</label>
 						<div class="col-lg-7">
@@ -69,7 +78,7 @@
 							<input type="text" class="form-control" name="tags[]" placeholder="Type to add a tag" data-role="tagsinput">
 						</div>
 					</div>
-					
+
 				</div>
 			</div>
 			<div class="panel">

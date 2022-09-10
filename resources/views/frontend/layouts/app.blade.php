@@ -91,7 +91,7 @@
 
 
 
- 
+
 
 <style>
 
@@ -220,7 +220,7 @@
     }
 </style>
 
- 
+
 
 
 
@@ -284,7 +284,7 @@
 
     @include('frontend.partials.modal')
 
- 
+
 
     <div class="modal fade" id="addToCart">
         <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-zoom product-modal" id="modal-size" role="document">

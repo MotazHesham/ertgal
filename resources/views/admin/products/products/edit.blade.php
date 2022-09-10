@@ -3,9 +3,9 @@
 @section('content')
 <div>
     <h1 class=" text-center">
-		{{__('Edit Product')}} 
+		{{__('Edit Product')}}
 		<br>
-		<span class="text-small" style="font-size: 20px">{{$product->name}}</span> 
+		<span class="text-small" style="font-size: 20px">{{$product->name}}</span>
 	</h1>
 </div>
 <div class="row">
@@ -63,6 +63,15 @@
                             </select>
                         </div>
                     </div>
+					<div class="form-group" id="brand">
+						<label class="col-lg-2 control-label">Special</label>
+						<div class="col-lg-7">
+							<select class="form-control demo-select2-placeholder" name="special" id="special" required>
+                                <option value="0" @if($product->special == 0) selected @endif>Non Special</option>
+                                <option value="1" @if($product->special == 1) selected @endif>Special</option>
+							</select>
+						</div>
+					</div>
                     <div class="form-group">
                         <label class="col-lg-2 control-label">{{__('Unit')}}</label>
                         <div class="col-lg-7">
@@ -100,7 +109,7 @@
 							</div>
 						</div>
 					</div>
-					
+
 				</div>
 			</div>
 			<div class="panel">
@@ -245,7 +254,7 @@
                     </div>
 				</div>
 			</div>
-			
+
 			<div class="panel">
 				<div class="panel-heading bord-btm">
 					<h3 class="panel-title">{{__('PDF Specification')}}</h3>
@@ -276,7 +285,7 @@
 							<textarea name="meta_description" rows="8" class="form-control">{{ $product->meta_description }}</textarea>
 						</div>
 					</div>
-					
+
 				</div>
 			</div>
 			<div class="mar-all text-right">

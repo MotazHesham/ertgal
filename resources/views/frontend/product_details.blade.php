@@ -30,7 +30,7 @@
     <meta property="og:description" content="{{ $detailedProduct->meta_description }}" />
     <meta property="og:site_name" content="{{ env('APP_NAME') }}" />
     <meta property="og:price:amount" content="{{ single_price($detailedProduct->unit_price) }}" />
-@endsection 
+@endsection
 
 @section('content')
     <!-- SHOP GRID WRAPPER -->
@@ -44,18 +44,18 @@
                     <div class="col-lg-6 product-gal">
                         <div class="product-gal sticky-top d-flex flex-row-reverse">
                             @if(is_array(json_decode($detailedProduct->photos)) && count(json_decode($detailedProduct->photos)) > 0)
-                                <div class="product-gal-img"> 
-                                    <img src="{{ asset('frontend/images/placeholder.jpg') }}" class="xzoom img-fluid lazyload" src="{{ asset('frontend/images/placeholder.jpg') }}" data-src="{{ asset(json_decode($detailedProduct->photos)[0]) }}" xoriginal="{{ asset(json_decode($detailedProduct->photos)[0]) }}" /> 
+                                <div class="product-gal-img">
+                                    <img src="{{ asset('frontend/images/placeholder.jpg') }}" class="xzoom img-fluid lazyload" src="{{ asset('frontend/images/placeholder.jpg') }}" data-src="{{ asset(json_decode($detailedProduct->photos)[0]) }}" xoriginal="{{ asset(json_decode($detailedProduct->photos)[0]) }}" />
                                 </div>
                                 <div class="product-gal-thumb">
                                     <div class="xzoom-thumbs">
                                         @foreach (json_decode($detailedProduct->photos) as $key => $photo)
                                             <a href="{{ asset($photo) }}">
-                                                <img src="{{ asset('frontend/images/placeholder.jpg') }}" class="xzoom-gallery lazyload" src="{{ asset('frontend/images/placeholder.jpg') }}" width="80" data-src="{{ asset($photo) }}"  @if($key == 0) xpreview="{{ asset($photo) }}" @endif>
+                                                <img onclick="selected_photo('{{$photo}}')" src="{{ asset('frontend/images/placeholder.jpg') }}" class="xzoom-gallery lazyload" src="{{ asset('frontend/images/placeholder.jpg') }}" width="80" data-src="{{ asset($photo) }}"  @if($key == 0) xpreview="{{ asset($photo) }}" @endif>
                                             </a>
                                         @endforeach
-                                        
-                                    </div> 
+
+                                    </div>
                                 </div>
                             @endif
                         </div>
@@ -66,7 +66,7 @@
                         <div class="product-description-wrapper">
                             <!-- Product title -->
                             <h1 class="product-title mb-2">
-                                {{ __($detailedProduct->name) }}  
+                                {{ __($detailedProduct->name) }}
                             </h1>
 
                             <div class="row align-items-center my-1">
@@ -140,7 +140,7 @@
                                             <span class="piece">/{{ $detailedProduct->unit }}</span>
                                         </div>
                                     </div>
-                                    @if(Auth::check() && Auth::user()->user_type == 'seller') 
+                                    @if(Auth::check() && Auth::user()->user_type == 'seller')
                                         <div class="col-2">
                                             <div class="product-description-label">{{__('Commission')}}:</div>
                                         </div>
@@ -151,13 +151,13 @@
                                                 </strong>
                                                 <span class="piece">/{{ $detailedProduct->unit }}</span>
                                             </div>
-                                        </div> 
+                                        </div>
                                     @endif
                                 </div>
 
-                                
+
                             @else
-                                
+
                                 <div class="row no-gutters mt-3">
                                     <div class="col-2">
                                         <div class="product-description-label">{{__('Price')}}:</div>
@@ -170,8 +170,8 @@
                                             <span class="piece">/{{ $detailedProduct->unit }}</span>
                                         </div>
                                     </div>
-                                    
-                                @if(Auth::check() && Auth::user()->user_type == 'seller') 
+
+                                @if(Auth::check() && Auth::user()->user_type == 'seller')
                                     <div class="col-2">
                                         <div class="product-description-label">{{__('Commission')}}:</div>
                                     </div>
@@ -182,7 +182,7 @@
                                             </strong>
                                             <span class="piece">/{{ $detailedProduct->unit }}</span>
                                         </div>
-                                    </div> 
+                                    </div>
                                 @endif
                                 </div>
                             @endif
@@ -249,10 +249,10 @@
                                     <hr>
                                 @endif
 
-                            {{--  attributes And colors --}}      
-                            {{-- =========================================== --}}       
-                                
-                                @if ($has_unit_attribute) 
+                            {{--  attributes And colors --}}
+                            {{-- =========================================== --}}
+
+                                @if ($has_unit_attribute)
                                     <input type="hidden" name="quantity" class="form-control input-number text-center" placeholder="1" value="1" min="1" max="10">
                                 @else
                                     <!-- Quantity + Add to cart -->
@@ -307,12 +307,12 @@
                                         </div>
                                     </div>
                                     @endif
-                                </div> 
+                                </div>
 
 
                             </form>
-                            <hr>
-                            <div> 
+
+                            <div>
                                 @include('admin.partials.error_message')
                             </div>
                             <form id="option-choice-form" enctype="multipart/form-data" action="{{route('cart.addToCart')}}" method="POST">
@@ -321,109 +321,111 @@
                                 <input class="chosen_price_input" type="hidden" name="price">
                                 <input class="chosen_variant" type="hidden" name="variant">
                                 <input class="chosen_quntity_input" type="hidden" name="quantity" value="1">
-                                @if(auth()->check())
-                                    @if($detailedProduct->added_by != 'designer')
-                                        <div class="form-box bg-white mt-4">
-                                            <div class="form-box-title px-3 py-2">
-                                                {{__('Images To Print in Product')}}
-                                            </div>
-                                            <div class="form-box-content p-3">
-                                                <div id="product-images">
-                                                    <div class="row">
-                                                        <div class="col-md-2">
-                                                            <label>{{__('Main Images')}}</label>
-                                                        </div>
-                                                        <div class="col-md-6">
-                                                            <input type="file" name="photos[]" id="photos-1" class="custom-input-file custom-input-file--4" data-multiple-caption="{count} files selected" accept="image/*" />
-                                                            <label for="photos-1" class="mw-100 mb-3">
-                                                                <span></span>
-                                                                <strong>
-                                                                    <i class="fa fa-upload"></i>
-                                                                    {{__('Choose image')}}
-                                                                </strong>
-                                                            </label>
-                                                        </div>
-                                                        <div class="col-md-4">
-                                                            <input type="text" name="photos_note[]" class="form-control" placeholder="ملحوظة علي الصورة">
-                                                        </div>
-                                                        
-                                                    </div>
-                                                </div>
-                                                <div class="text-right">
-                                                    <button type="button" class="btn btn-info mb-3" onclick="add_more_slider_image()">{{ __('Add More') }}</button>
-                                                </div>
-                                                
-                                            </div>
-                                        </div>
-
-                                        @if(auth()->check() && auth()->user()->user_type == 'seller')
+                                <input class="chosen_photo" type="hidden" name="chosen_photo" id="chosen_photo" value="{{json_decode($detailedProduct->photos)[0]}}">
+                                @if($detailedProduct->special)
+                                    @if(auth()->check())
+                                        @if($detailedProduct->added_by != 'designer')
                                             <div class="form-box bg-white mt-4">
                                                 <div class="form-box-title px-3 py-2">
-                                                    {{__('Specification')}}
+                                                    {{__('Images To Print in Product')}}
+                                                </div>
+                                                <div class="form-box-content p-3">
+                                                    <div id="product-images">
+                                                        <div class="row">
+                                                            <div class="col-md-2">
+                                                                <label>{{__('Main Images')}}</label>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <input type="file" name="photos[]" id="photos-1" class="custom-input-file custom-input-file--4" data-multiple-caption="{count} files selected" accept="image/*" />
+                                                                <label for="photos-1" class="mw-100 mb-3">
+                                                                    <span></span>
+                                                                    <strong>
+                                                                        <i class="fa fa-upload"></i>
+                                                                        {{__('Choose image')}}
+                                                                    </strong>
+                                                                </label>
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <input type="text" name="photos_note[]" class="form-control" placeholder="ملحوظة علي الصورة">
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="text-right">
+                                                        <button type="button" class="btn btn-info mb-3" onclick="add_more_slider_image()">{{ __('Add More') }}</button>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+
+                                            @if(auth()->check() && auth()->user()->user_type == 'seller')
+                                                <div class="form-box bg-white mt-4">
+                                                    <div class="form-box-title px-3 py-2">
+                                                        {{__('Specification')}}
+                                                    </div>
+                                                    <div class="form-box-content p-3">
+                                                        <div class="row">
+                                                            <div class="col-md-2">
+                                                                <label>{{__('PDF')}}</label>
+                                                            </div>
+                                                            <div class="col-md-10">
+                                                                <input type="file" name="pdf" id="file-6" class="custom-input-file custom-input-file--4" data-multiple-caption="{count} files selected" accept="pdf/*" />
+                                                                <label for="file-6" class="mw-100 mb-3">
+                                                                    <span></span>
+                                                                    <strong>
+                                                                        <i class="fa fa-upload"></i>
+                                                                        {{__('Choose PDF')}}
+                                                                    </strong>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-md-2">
+                                                                <label>{{__('Link')}}</label>
+                                                            </div>
+                                                            <div class="col-md-8">
+                                                                <input type="text" class="form-control mb-3" id="link" name="link" value="{{old('link')}}">
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="row">
+                                                            <div class="col-md-2">
+                                                                <label>{{__('File Sent To Email')}}</label>
+                                                            </div>
+                                                            <div class="col-md-2">
+                                                                <label class="switch" style="margin-top:5px;">
+                                                                    <input type="checkbox" name="file_sent">
+                                                                    <span class="slider round"></span>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            @endif
+
+                                            <div class="form-box bg-white mt-4">
+                                                <div class="form-box-title px-3 py-2">
+                                                    {{__('Description')}}
                                                 </div>
                                                 <div class="form-box-content p-3">
                                                     <div class="row">
                                                         <div class="col-md-2">
-                                                            <label>{{__('PDF')}}</label>
+                                                            <label>{{__('Description')}}</label>
                                                         </div>
                                                         <div class="col-md-10">
-                                                            <input type="file" name="pdf" id="file-6" class="custom-input-file custom-input-file--4" data-multiple-caption="{count} files selected" accept="pdf/*" />
-                                                            <label for="file-6" class="mw-100 mb-3">
-                                                                <span></span>
-                                                                <strong>
-                                                                    <i class="fa fa-upload"></i>
-                                                                    {{__('Choose PDF')}}
-                                                                </strong>
-                                                            </label>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-md-2">
-                                                            <label>{{__('Link')}}</label>
-                                                        </div>
-                                                        <div class="col-md-8">
-                                                            <input type="text" class="form-control mb-3" id="link" name="link" value="{{old('link')}}">
-                                                        </div>
-                                                    </div>
-                                                    
-                                                    <div class="row">
-                                                        <div class="col-md-2">
-                                                            <label>{{__('File Sent To Email')}}</label>
-                                                        </div>
-                                                        <div class="col-md-2">
-                                                            <label class="switch" style="margin-top:5px;">
-                                                                <input type="checkbox" name="file_sent">
-                                                                <span class="slider round"></span>
-                                                            </label>
+                                                            <div class="mb-3">
+                                                                <textarea rows="8" cols="50"  name="description">{{old('description')}}</textarea>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         @endif
-                                        
-                                        <div class="form-box bg-white mt-4">
-                                            <div class="form-box-title px-3 py-2">
-                                                {{__('Description')}}
-                                            </div>
-                                            <div class="form-box-content p-3">
-                                                <div class="row">
-                                                    <div class="col-md-2">
-                                                        <label>{{__('Description')}}</label>
-                                                    </div>
-                                                    <div class="col-md-10">
-                                                        <div class="mb-3">
-                                                            <textarea rows="8" cols="50"  name="description">{{old('description')}}</textarea>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
                                     @endif
                                 @endif
-
                                 <div class="accordion" id="accordionExample">
                                     <div class="d-table width-100 mt-3">
-                                        
+
                                         <div class="d-table-cell">
                                             <!-- Buy Now button -->
                                             @php
@@ -434,12 +436,12 @@
                                                 }
                                             @endphp
                                             @if ($qty > 0)
-                                                @auth 
+                                                @auth
                                                     <button type="submit" class="btn btn-styled btn-alt-base-1 c-white btn-icon-left strong-700 hov-bounce hov-shaddow ml-2 add-to-cart" >
                                                         <i class="la la-shopping-cart"></i>
                                                         {{__('Add to cart')}}
                                                     </button>
-                                                @else 
+                                                @else
                                                     <button type="button" class="btn btn-styled btn-alt-base-1 c-white btn-icon-left strong-700 hov-bounce hov-shaddow ml-2 add-to-cart"
                                                             onclick="showCheckoutModal()">
                                                         <i class="la la-shopping-cart"></i>
@@ -453,9 +455,9 @@
                                                     </button>
                                                 @endif
                                                 <button type="button" class="btn btn-styled btn-base-1 btn-icon-left strong-700 hov-bounce hov-shaddow buy-now" onclick="addToWishList({{ $detailedProduct->id }})" @if($loved) disabled @endif>
-                                                    @if($loved) 
+                                                    @if($loved)
                                                         <i class="fa fa-heart" style="color: crimson"></i> {{__('in your wishlist')}}
-                                                    @else 
+                                                    @else
                                                         <i class="la la-heart-o"></i> {{__('Add to wishlist')}}
                                                     @endif
                                                 </button>
@@ -464,13 +466,13 @@
                                                     <i class="la la-cart-arrow-down"></i> {{__('Out of Stock')}}
                                                 </button>
                                             @endif
-                                            
+
                                         </div>
-                                    </div> 
+                                    </div>
                                 </div>
-                                
+
                             </form>
-                            @auth 
+                            @auth
                                 @include('frontend.orders.add_to_existing_order')
                             @endauth
 
@@ -830,9 +832,13 @@
                 shares: [ "whatsapp"]
     		});
 
-    	}); 
+    	});
 
-        
+        function selected_photo(photo){
+            $('#chosen_photo').val(photo);
+            console.log(photo);
+        }
+
 
         function CopyToClipboard(containerid) {
             if (document.selection) {
@@ -861,8 +867,8 @@
             @endif
         }
 
-        
-        
+
+
 
     </script>
 @endsection
