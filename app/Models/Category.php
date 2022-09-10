@@ -15,6 +15,7 @@ class Category extends Model
         'name',
         'banner',
         'icon',
+        'sort',
         'featured',
         'top',
         'slug',
@@ -23,7 +24,7 @@ class Category extends Model
         'created_at',
         'updated_at',
     ];
-    
+
     public function subcategories(){
         return $this->hasMany(SubCategory::class);
     }

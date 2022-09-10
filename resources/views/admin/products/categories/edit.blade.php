@@ -16,7 +16,7 @@
             <div class="panel-body">
 
                 @include('admin.partials.error_message')
-                
+
                 <div class="form-group">
                     <label class="col-sm-2 control-label" for="name">{{__('Name')}}</label>
                     <div class="col-sm-10">
@@ -33,6 +33,12 @@
                     <label class="col-sm-2 control-label" for="icon">{{__('Icon')}} <small>(32x32)</small></label>
                     <div class="col-sm-10">
                         <input type="file" id="icon" name="icon" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">{{__('Sort')}}</label>
+                    <div class="col-sm-10">
+                        <input type="number" class="form-control" name="sort" value="{{ $category->sort }}" >
                     </div>
                 </div>
                 <div class="form-group">

@@ -15,7 +15,7 @@
                                 <h3 class="heading heading-sm strong-300 c-gray-light text-capitalize">1. {{__('My Cart')}}</h3>
                             </div>
                         </div>
-                    </div> 
+                    </div>
 
                     <div class="col">
                         <div class="icon-block icon-block--style-1-v5 text-center ">
@@ -68,9 +68,9 @@
                                     <div class="form-box-title px-3 py-2">
                                         {{__('Payment')}}
                                     </div>
-                                    
+
                                     <div class="form-box-content p-3">
-                    
+
                                         <div class="row">
                                             <div class="col-md-2">
                                                 <label>{{__('Deposit')}} <span class="required-star">*</span></label>
@@ -90,7 +90,7 @@
                                                 <input type="number" min="0" step="0.01" class="form-control mb-3" name="deposit_amount" id="deposit_amount"  required value="{{old('deposit_amount')}}">
                                             </div>
                                         </div>
-                                        
+
                                         <div class="form-box-content p-3">
                                             <div class="row">
                                                 <div class="col-md-2">
@@ -139,7 +139,7 @@
                                     <div class="row">
 
                                         <div class="col-md-6 mx-auto">
-                                            <div class="row"> 
+                                            <div class="row">
                                                 <div class="col-6">
                                                     <label class="payment_option mb-4" data-toggle="tooltip" data-title="Cash on Delivery">
                                                         <input type="radio" id="" name="payment_option" value="cash_on_delivery" checked>
@@ -147,15 +147,15 @@
                                                             <img loading="lazy"  src="{{ asset('frontend/images/icons/cards/cod.png')}}" class="img-fluid">
                                                         </span>
                                                     </label>
-                                                </div> 
-                                                <div class="col-6">
+                                                </div>
+                                                {{-- <div class="col-6">
                                                     <label class="payment_option mb-4" data-toggle="tooltip" data-title="Online Payment">
                                                         <input type="radio" id="" name="payment_option" value="paymob">
                                                         <span>
                                                             <img loading="lazy"  src="{{ asset('frontend/images/icons/cards/VisaMaster.jpg')}}" class="img-fluid">
                                                         </span>
                                                     </label>
-                                                </div> 
+                                                </div>  --}}
                                             </div>
                                         </div>
 
@@ -166,7 +166,7 @@
                                         <input type="hidden" name="first_name" value="{{$first_name}}">
                                         <input type="hidden" name="last_name" value="{{$last_name}}">
                                         <input type="hidden" name="discount_code" value="{{$discount_code ?? ''}}">
-                                    </div> 
+                                    </div>
                                 </div>
                             </div>
 

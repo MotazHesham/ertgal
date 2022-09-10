@@ -19,7 +19,7 @@
                                     <span class="cat-name">{{__('All')}} <br> {{__('Categories')}}</span>
                                 </a>
                             </li>
-                            @foreach (\App\Models\Category::all()->take(11) as $key => $category)
+                            @foreach (\App\Models\Category::orderBy('sort','asc')->get()->take(11) as $key => $category)
                                 @php
                                     $brands = array();
                                 @endphp
@@ -273,15 +273,15 @@
             </div>
         </div>
     </div>
-    
-    {{-- 
+
+    {{--
     <div id="section_best_sellers">
 
     </div> --}}
 
     <section class="mb-3">
         <div class="container">
-            <div class="row gutters-10"> 
+            <div class="row gutters-10">
 
                 {{-- most orders --}}
                 {{-- <div class="col-lg-6">
@@ -316,7 +316,7 @@
                         @endforeach
                     </div>
                 </div>  --}}
-                
+
                 {{-- most profits --}}
                 {{-- <div class="col-lg-6">
                     <div class="section-title-1 clearfix">
@@ -341,10 +341,10 @@
                         @endforeach
                     </div>
                 </div> --}}
-                
-                
-                
-                
+
+
+
+
             </div>
         </div>
     </section>
