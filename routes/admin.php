@@ -353,6 +353,7 @@ Route::group(['prefix' =>'admin', 'middleware' => ['auth', 'admin']], function()
 		//countries
 		Route::resource('countries','CountryController');
 		Route::post('/countries/status', 'CountryController@updateStatus')->name('countries.status');
+		Route::post('/countries/update_website_status', 'CountryController@update_website_status')->name('countries.update_website_status');
 		Route::get('/countries/destroy/{id}', 'CountryController@destroy')->name('countries.destroy');
 
 		//Policy Controller
