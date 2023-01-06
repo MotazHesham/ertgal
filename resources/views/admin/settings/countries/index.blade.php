@@ -35,9 +35,12 @@
                     <tr>
                         <th width="10%">#</th>
                         <th>{{__('Name')}}</th>
+                        <th>{{__('Code')}}</th>
+                        <th>{{__('Code Cost')}}</th>
                         <th>{{__('Type')}}</th>
                         <th>{{__('Cost')}}</th>
                         <th>{{__('Status')}}</th>
+                        <th>{{__('Website')}}</th>
                         <th width="10%">{{__('Options')}}</th>
                     </tr>
                 </thead>
@@ -46,11 +49,17 @@
                         <tr>
                             <td>{{ ($key+1) + ($countries->currentPage() - 1)*$countries->perPage() }}</td>
                             <td>{{ $country->name }}</td>
+                            <td>{{ $country->code }}</td>
+                            <td>{{ $country->code_cost }}</td>
                             <td>{{ __(ucfirst($country->type))}}</td>
                             <td>{{ $country->cost }}</td>
                             <td>
                             <label class="switch">
                                 <input onchange="update_status(this)" value="{{ $country->id }}" type="checkbox" <?php if($country->status == 1) echo "checked";?> >
+                                <span class="slider round"></span></label>
+                            </td><td>
+                            <label class="switch">
+                                <input onchange="update_website_status(this)" value="{{ $country->id }}" type="checkbox" <?php if($country->website == 1) echo "checked";?> >
                                 <span class="slider round"></span></label>
                             </td>
                             <td>
@@ -90,6 +99,22 @@
             $.post('{{ route('countries.status') }}', {_token:'{{ csrf_token() }}', id:el.value, status:status}, function(data){
                 if(data == 1){
                     showAlert('success', 'Country status updated successfully');
+                }
+                else{
+                    showAlert('danger', 'Something went wrong');
+                }
+            });
+        }
+        function update_website_status(el){
+            if(el.checked){
+                var status = 1;
+            }
+            else{
+                var status = 0;
+            }
+            $.post('{{ route('countries.update_website_status') }}', {_token:'{{ csrf_token() }}', id:el.value, status:status}, function(data){
+                if(data == 1){
+                    showAlert('success', 'Country Website updated successfully');
                 }
                 else{
                     showAlert('danger', 'Something went wrong');

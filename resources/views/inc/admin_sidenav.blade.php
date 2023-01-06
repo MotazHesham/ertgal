@@ -265,6 +265,9 @@
                                             <a class="nav-link" href="{{route('receipt.price_view')}}">{{__('Price View Receipt')}}</a>
                                         </li>
                                     @endif
+                                    <li class="{{ areActiveRoutes(['receipt.excel_files'])}}">
+                                        <a class="nav-link" href="{{route('receipt.excel_files')}}">{{__('Excel Files')}}</a>
+                                    </li>
                                 </ul>
                             </li>
                         @endif

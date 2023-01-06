@@ -16,17 +16,80 @@ use App\Http\Controllers\PushNotificationController;
 use App\Models\Country;
 use App\Models\ReceiptProduct;
 use App\Models\Social;
+use App\Models\ExcelFile;
 use Validator;
 use DB;
 use App\Http\Requests\ReceiptSocialRequest;
 use App\Http\Controllers\Admin\WaslaController;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Storage;
+use App\Imports\ReceiptSocialImport;
+use App\Exports\ReceiptSocialResultsExport;
 
 class ReceiptSocialController extends Controller
 {
     protected $view = 'admin.receipts.receipt_social.';
 
+    public function excel_files(){
+        $excel_files = ExcelFile::all();
+        return view('admin.receipts.excel_files',compact('excel_files'));
+    }
+
+    public function upload_excel(Request $request)
+    {
+        $now_time = time();
+        $excel_file = new ExcelFile;
+        $excel_file->type = 'social_delivery';
+        $excel_file->uploaded_file = $request->excel_file->store('uploads/receipt_social/excelfiles/'.$now_time);
+
+        $sheets = (new ReceiptSocialImport)->toCollection($request->excel_file);
+        $accepted = [];
+        $rejected = [];
+        $countries = [];
+        foreach(Country::all() as $country){
+            if($country->code){
+                $countries[$country->code] = $country->code_cost;
+            }
+        }
+        foreach($sheets[0] as $key => $row){
+            if($key != 0){
+                $receipt_social = Receipt_social::where('order_num',$row[1])->first();
+                if($receipt_social){
+                    if($receipt_social->done){
+                        $row[] = 'تم التسليم من قبل';
+                        $rejected[] = $row;
+                    }else{
+                        $code_cost = $countries[$row[2]] ?? 0;
+                        $row[] = $code_cost;
+                        $row[] = $row[3] - $code_cost;
+                        $accepted[] = $row;
+                        $receipt_social->done = 1;
+                        $receipt_social->save();
+                    }
+                }else{
+                    $row [] = 'Not Found';
+                    $rejected[] = $row;
+                }
+            }
+        }
+        $excel_file->results = json_encode([
+            'accepted' => count($accepted),
+            'rejected' => count($rejected),
+        ]);
+
+        $rows = [
+            'accepted' => $accepted,
+            'rejected' => $rejected,
+        ];
+        $path = 'uploads/receipt_social/excelfiles/'.$now_time.'/social_receipts_results.xlsx';
+        Excel::store(new ReceiptSocialResultsExport($rows), $path);
+        $excel_file->result_file = $path;
+        $excel_file->save();
+        return Storage::download($excel_file->result_file);
+
+
+    }
     public function print_receive_money($id){
         $receipt = Receipt_social::findOrFail($id);
         return view('admin.receipts.print_receive_money',compact('receipt'));
@@ -501,6 +564,7 @@ class ReceiptSocialController extends Controller
         $country = Country::findOrFail($request->shipping_country);
         $validated_request['shipping_country_id'] = $country->id;
         $validated_request['shipping_country_name'] = $country->name;
+        $validated_request['shipping_country_code'] = $country->code;
         $validated_request['shipping_country_cost'] = $country->cost;
 
         $validated_request['staff_id'] = auth()->user()->id;
@@ -685,6 +749,7 @@ class ReceiptSocialController extends Controller
         $country = Country::findOrFail($request->shipping_country);
         $validated_request['shipping_country_id'] = $country->id;
         $validated_request['shipping_country_name'] = $country->name;
+        $validated_request['shipping_country_code'] = $country->code;
         $validated_request['shipping_country_cost'] = $country->cost;
 
         $receipt->update($validated_request);

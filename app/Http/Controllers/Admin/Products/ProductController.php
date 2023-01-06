@@ -144,7 +144,6 @@ class ProductController extends Controller
                 array_push($options, explode(',', $my_str));
             }
         }
-
         $combinations = combinations($options);
         return view('partials.sku_combinations', compact('combinations', 'unit_price', 'purchase_price', 'colors_active', 'product_name'));
     }

@@ -58,7 +58,9 @@ class CountryController extends Controller
     {
         $country = new Country;
         $country->name = $request->name;
+        $country->code = $request->code;
         $country->cost = $request->cost;
+        $country->code_cost = $request->code_cost;
         $country->type = $request->type;
         if($country->save()){
             flash('Country has been inserted successfully')->success();
@@ -101,8 +103,9 @@ class CountryController extends Controller
     public function update(Request $request, $id)
     {
         $country = Country::findOrFail($id);
-        $country->name = $request->name;
         $country->cost = $request->cost;
+        $country->code_cost = $request->code_cost;
+        $country->code = $request->code;
         $country->type = $request->type;
         if($country->save()){
             flash('Country has been updated successfully')->success();
@@ -133,6 +136,15 @@ class CountryController extends Controller
     public function updateStatus(Request $request){
         $country = Country::findOrFail($request->id);
         $country->status = $request->status;
+        if($country->save()){
+            return 1;
+        }
+        return 0;
+    }
+
+    public function update_website_status(Request $request){
+        $country = Country::findOrFail($request->id);
+        $country->website = $request->status;
         if($country->save()){
             return 1;
         }

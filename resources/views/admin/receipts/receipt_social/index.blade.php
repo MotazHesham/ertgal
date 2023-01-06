@@ -10,6 +10,35 @@
 
 @section('content')
 
+
+<!-- Modal -->
+<div class="modal fade" id="uploadexcel" tabindex="-1" aria-labelledby="uploadexcelLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="uploadexcelLabel">Upload Fedex Excel file</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="{{ route('receipt.social.upload_excel')}}" method="post" enctype="multipart/form-data">
+                    @csrf
+                    <div class="row">
+                        <div class="col-md-6">
+                            <input type="file" name="excel_file" class="form-control">
+                        </div>
+                        <div class="col-md-3">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
 <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -66,14 +95,17 @@
 
 <div class="container">
     <div class="row">
-        <div class="col-lg-4">
+        <div class="col-lg-3">
             <a href="{{ route('receipt.social.trashed',$receipt_type)}}" class="btn btn-rounded btn-lg btn-danger pull-left">{{__('Trashed '.ucfirst($receipt_type).' Receipts')}}</a>
         </div>
-        <div class="col-lg-4">
+        <div class="col-lg-3">
             <a href="{{route('receipt.product',$receipt_type)}}" class="btn btn-lg btn-rounded btn-success">{{__('Products Of '. ucfirst($receipt_type) .' Receipt')}}</a>
         </div>
-        <div class="col-lg-4">
+        <div class="col-lg-3">
             <a href="#" data-toggle="modal" data-target="#exampleModal" class="btn btn-rounded btn-lg btn-info pull-right">{{__('Add '.ucfirst($receipt_type).' Receipt')}}</a>
+        </div>
+        <div class="col-lg-3">
+            <a href="#" data-toggle="modal" data-target="#uploadexcel"  class="btn btn-rounded btn-lg btn-warning pull-right">Upload Fedex Excel File</a>
         </div>
     </div>
 </div>

@@ -3,67 +3,46 @@
     <thead>
         <tr>
             <th>
-                نوع الشحن
+                ShipperRef
             </th>
             <th>
-                الفرع
+                Consignee
             </th>
             <th>
-                رقم موبايل المرسل اليه
+                ConsigneeName
             </th>
             <th>
-                رقم موبايل بديل
+                ConsigneeMob1
             </th>
             <th>
-                اسم العميل المرسل اليه
+                ConsigneeTel1
             </th>
             <th>
-                المحافظة
+                Destination
             </th>
             <th>
-                المنطقة
+                ConsigneeAddress1
             </th>
             <th>
-                اسم الشارع
-            </th>
-            <td>
-                علامة مميزة
-            </td>
-            <td>
-                رقم العمارة
-            </td>
-            <td>
-                رقم الدور
-            </td>
-            <td>
-                رقم الشقة
-            </td>
-            <td>
-                ملاحظات
-            </td>
-            <th>
-                محتوي الشحنة
+                ConsigneeAddress2
             </th>
             <th>
-                وزن الشحنة
+                CODAmt
             </th>
             <th>
-                طريقة التحصيل
+                NoofPieces
             </th>
             <th>
-                المبلغ المحصل
+                Weight
             </th>
             <th>
-                سعر الشحن
+                GoodsDesc
             </th>
             <th>
-                مسموح الفتح؟
+                SpecialInstruct
             </th>
             <th>
-                قابل للكسر
-            </th>
-            <th>
-                ملاحظات
+                ServiceType
             </th>
         </tr>
     </thead>
@@ -87,27 +66,20 @@
             @endphp
 
             <tr>
-                <td>شحن الى باب البيت</td>
-                <td></td>
-                <td>{{ $receipt->phone }}</td>
+                <td>{{$receipt->order_num}}</td>
+                <td>{{$receipt->client_name}}</td>
+                <td>{{$receipt->client_name}}</td>
                 <td>{{ $receipt->phone2 }}</td>
-                <td>{{ $receipt->client_name }}</td>
-                <td>{{ $receipt->shipping_country_name }}</td>
+                <td>{{ $receipt->phone }}</td>
+                <td>{{$receipt->shipping_country_code}}</td>
+                <td>{{$receipt->address}}</td>
                 <td></td>
-                <td>{{ $receipt->address }}</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td><?php echo nl2br($description ?? ''); ?></td>
-                <td>طرد مقابل مبلغ</td>
-                <td>1</td>
-                <td>كاش</td>
                 <td>{{ $receipt->total + $receipt->extra_commission + $receipt->shipping_country_cost - $receipt->deposit }}</td>
-                <td>يضاف ثمن الشحنة الى الراسل</td>
-                <td>نعم</td>
-                <td>نعم</td>
-                <td>طرد</td>
+                <td>1</td>
+                <td>1</td>
+                <td><?php echo nl2br($description ?? ''); ?></td>
+                <td>قابل للكسر</td>
+                <td>cod</td>
             </tr>
         @endforeach
 

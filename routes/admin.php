@@ -152,6 +152,8 @@ Route::group(['prefix' =>'admin', 'middleware' => ['auth', 'admin']], function()
 	//Receipts
 	Route::group(['prefix' => 'receipt', 'namespace' => 'Admin\Receipts'], function () {
 
+        Route::get('/excel_files','ReceiptSocialController@excel_files')->name('receipt.excel_files');
+
 		//Receipt Products
 		Route::group(['prefix' => 'product' ,'middleware' => 'client_receipt_permission'], function () {
 			Route::get('{type}','ReceiptProductController@index')->name('receipt.product');
@@ -207,6 +209,7 @@ Route::group(['prefix' =>'admin', 'middleware' => ['auth', 'admin']], function()
 		Route::group(['prefix' => 'social' ,'middleware' => 'social_receipt_permission'], function () {
 			Route::get('/add/{receipt_type}','ReceiptSocialController@add')->name('receipt.social.add');
 			Route::get('/index/{receipt_type}/{confirm}','ReceiptSocialController@index')->name('receipt.social');
+			Route::post('/upload_excel','ReceiptSocialController@upload_excel')->name('receipt.social.upload_excel');
 			Route::post('/store','ReceiptSocialController@store')->name('receipt.social.store');
 			Route::get('/trashed/{receipt_type}','ReceiptSocialController@trashed')->name('receipt.social.trashed');
 			Route::get('/edit/{id}','ReceiptSocialController@edit')->name('receipt.social.edit');
