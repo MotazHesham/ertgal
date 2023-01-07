@@ -28,13 +28,13 @@
                 <div class="form-group">
                     <label class="col-sm-3 control-label" for="cost">{{__('Cost')}}</label>
                     <div class="col-sm-9">
-                        <input type="number" min="0"  value="{{ $country->cost }}" id="cost" name="cost" class="form-control" required>
+                        <input type="number" min="0" step="0.1" value="{{ $country->cost }}" id="cost" name="cost" class="form-control" required>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-3 control-label" for="code_cost">{{__('Code Cost')}}</label>
                     <div class="col-sm-9">
-                        <input type="number" min="0"  value="{{ $country->code_cost }}" id="code_cost" name="code_cost" class="form-control" required>
+                        <input type="number" min="0" step="0.1" value="{{ $country->code_cost }}" id="code_cost" name="code_cost" class="form-control" required>
                     </div>
                 </div>
                 <div class="form-group">
