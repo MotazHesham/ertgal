@@ -219,6 +219,7 @@ Route::group(['prefix' =>'admin', 'middleware' => ['auth', 'admin']], function()
 			Route::get('/destroy/{id}','ReceiptSocialController@destroy')->name('receipt.social.destroy');
 			Route::get('/product/destroy/{id}','ReceiptSocialController@destroy_product')->name('receipt.social.product.destroy');
 			Route::post('/store_product','ReceiptSocialController@store_product')->name('receipt.social.store_product');
+			Route::post('/returned','ReceiptSocialController@updateReturned')->name('receipt.social.returned');
 			Route::post('/done','ReceiptSocialController@updateDone')->name('receipt.social.done');
 			Route::post('/calling','ReceiptSocialController@updatecalling')->name('receipt.social.calling');
 			Route::get('/print/{id}','ReceiptSocialController@print')->name('receipt.social.print');

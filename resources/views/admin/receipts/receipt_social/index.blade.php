@@ -172,7 +172,7 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-6">
+                                        <div class="col-md-4">
                                             <span>&nbsp;</span>
                                             <div class="@isset($payment_status) isset @endisset" style="margin-bottom: 10px">
                                                 <select class="form-control  demo-select2" name="payment_status" id="payment_status" onchange="sort_receipt_social()">
@@ -183,13 +183,22 @@
                                                 </select>
                                             </div>
                                         </div>
-                                        <div class="col-md-6">
+                                        <div class="col-md-4">
                                             <span>&nbsp;</span>
                                             <div class=" @isset($done) isset @endisset" style=" margin-bottom: 10px">
                                                 <select class="form-control demo-select2" name="done" id="done" onchange="sort_receipt_social()">
                                                     <option value="">حالة التسليم</option>
                                                     <option value="1" @isset($done) @if($done == '1') selected @endif @endisset>تم التسليم</option>
                                                     <option value="0" @isset($done) @if($done == '0') selected @endif @endisset>لم يتم التسليم</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <span>&nbsp;</span>
+                                            <div class=" @isset($returned) isset @endisset" style=" margin-bottom: 10px">
+                                                <select class="form-control demo-select2" name="returned" id="returned" onchange="sort_receipt_social()">
+                                                    <option value="">حالة الطلب</option>
+                                                    <option value="1" @isset($returned) @if($returned == '1') selected @endif @endisset>مرتجع</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -597,6 +606,8 @@
                 @foreach($receipts as $key => $receipt)
                 <tr @if($receipt->done)
                         style="background-image:linear-gradient(to {{$generalsetting->done_3}},{{$generalsetting->done_1}},{{$generalsetting->done_2}})"
+                    @elseif($receipt->returned)
+                        style="background:#ffff0070"
                     @elseif($receipt->quickly)
                         style="background-image:linear-gradient(to {{$generalsetting->quickly_3}},{{$generalsetting->quickly_1}},{{$generalsetting->quickly_2}})"
                     @endif>
@@ -679,6 +690,11 @@
                         <span class="badge badge-default">{{__('Done')}}</span>
                         <label class="switch">
                             <input onchange="update_done(this)" value="{{ $receipt->id }}" type="checkbox" <?php if($receipt->done == 1) echo "checked";?> >
+                            <span class="slider round"></span></label>
+                        <hr>
+                        <span class="badge badge-default">{{__('Returned')}}</span>
+                        <label class="switch">
+                            <input onchange="update_returned(this)" value="{{ $receipt->id }}" type="checkbox" <?php if($receipt->returned == 1) echo "checked";?> >
                             <span class="slider round"></span></label>
                     </td>
                     <td>
@@ -857,5 +873,21 @@
             });
         }
 
+        function update_returned(el){
+            if(el.checked){
+                var status = 1;
+            }
+            else{
+                var status = 0;
+            }
+            $.post('{{ route('receipt.social.returned') }}', {_token:'{{ csrf_token() }}', id:el.value, status:status}, function(data){
+                if(data == 1){
+                    showAlert('success', 'success');
+                }
+                else{
+                    showAlert('danger', 'Something went wrong');
+                }
+            });
+        }
     </script>
 @endsection

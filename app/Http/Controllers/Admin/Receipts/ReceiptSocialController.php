@@ -109,6 +109,14 @@ class ReceiptSocialController extends Controller
         return view($this->view . 'new_receipt_social',compact('receipt_social'));
     }
 
+
+    public function updateReturned(Request $request)
+    {
+        $receipt = Receipt_social::findOrFail($request->id);
+        $receipt->returned = $request->status;
+        $receipt->save();
+        return 1;
+    }
     public function updateDone(Request $request)
     {
         $receipt = Receipt_social::findOrFail($request->id);
@@ -365,6 +373,7 @@ class ReceiptSocialController extends Controller
         $calling = null;
         $quickly = null;
         $done = null;
+        $returned = null;
         $country_id = null;
         $playlist_status = null;
         $description = null;
@@ -411,6 +420,11 @@ class ReceiptSocialController extends Controller
         if ($request->playlist_status != null){
             $receipts = $receipts->where('playlist_status',$request->playlist_status);
             $playlist_status = $request->playlist_status;
+        }
+
+        if ($request->returned != null) {
+            $receipts = $receipts->where('returned', $request->returned);
+            $returned = $request->returned;
         }
         if ($request->calling != null){
             $receipts = $receipts->where('calling',$request->calling);
@@ -506,7 +520,7 @@ class ReceiptSocialController extends Controller
 
         $receipts = $receipts->orderBy('quickly','desc')->orderBy('created_at', 'desc')->paginate(15);
 
-        return view($this->view . 'index', compact('statistics','receipts','done','type','delivery_status','payment_status','sent_to_wasla','calling','country_id',
+        return view($this->view . 'index', compact('statistics','receipts', 'returned','done','type','delivery_status','payment_status','sent_to_wasla','calling','country_id',
                                                     'phone', 'client_name', 'order_num','quickly', 'playlist_status','description','receipt_type','include', 'socials',
                                                     'staff_id','from','to','from_date','to_date','generalsetting','staffs','confirm','receipts2','exclude','social_id'));
     }
