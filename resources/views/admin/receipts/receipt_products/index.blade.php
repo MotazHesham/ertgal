@@ -17,8 +17,27 @@
                             <div class="col-md-4">
                                 <input type="text" placeholder="أسم المنتج أو السعر" @isset($name) value="{{$name}}" @endisset name="name" class="form-control">
                             </div>
+                            <div class="col-md-3">
+                                {{-- start date --}}
+                                <div class="col-md-12 text-center" style="margin-bottom:10px">
+                                    <span class="badge badge-default">من تاريخ الأضافة</span>
+                                    <input type="text" @isset($from_date) value="{{format_date($from_date)}}" @endisset  disabled id="from_date_text" class="form-control @isset($from_date) isset @endisset" style="position: relative;">
+                                    <input type="date" onkeydown="return false" class="form-control my_custom_date_input"  name="from_date" id="from_date" >
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                {{-- end date --}}
+                                <div class="col-md-12 text-center" style="margin-bottom:10px">
+                                    <span class="badge badge-default">الي تاريخ الأضافة</span>
+                                    <input type="text" @isset($to_date) value="{{format_date($to_date)}}" @endisset  disabled id="to_date_text" class="form-control @isset($to_date) isset @endisset" style="position: relative;">
+                                    <input type="date" onkeydown="return false" class="form-control my_custom_date_input"  name="to_date" id="to_date" >
+                                </div>
+                            </div>
                             <div class="col-md-2">
                                 <input type="submit" class="btn btn-success btn-rounded btn-block" value="{{__('Search')}}">
+                                @if($type == 'social' || $type == 'figures')
+                                <input type="submit"  name="download" class="btn btn-danger btn-rounded btn-block" value="{{__('Download')}}">
+                                @endif
                             </div>
                         </div>
                     </form>
@@ -31,6 +50,9 @@
                                 @if($type == 'social' || $type == 'figures')
                                     <th>{{__('Commission')}}</th>
                                     <th>{{__('Photos')}}</th>
+                                @endif
+                                @if(auth()->user()->user_type == 'admin')
+                                    {{-- <th>الأرباح</th> --}}
                                 @endif
                             </tr>
                         </thead>
@@ -56,6 +78,12 @@
                                                 @endif
                                             </div>
                                         </td>
+                                    @endif
+                                    @if(auth()->user()->user_type == 'admin')
+                                    {{-- <td>
+                                        <span class="badge badge-info"> الكمية {{ $product->product_in_receitpsCount[0]->quantity ?? ''}}</span>
+                                        <span class="badge badge-success"> الأرباح {{ $product->product_in_receitpsCount[0]->total ?? ''}}</span>
+                                    </td> --}}
                                     @endif
                                     <td>
                                         <input type="submit" value="{{__('Edit')}}" class="btn btn-info btn-rounded">

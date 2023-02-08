@@ -2,28 +2,58 @@
 
 namespace App\Http\Controllers\Admin\Receipts;
 
+use App\Exports\ReceiptProductExport;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\ReceiptProduct;
 use App\Models\Receipt_social;
 use App\Models\Receipt_social_Product;
 use Image;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ReceiptProductController extends Controller
 {
     public function index(Request $request){
         $name = null;
+        $from_date = null;
+        $to_date = null;
+
         $type = $request->type;
+
+        $products = ReceiptProduct::orderBy('created_at','desc')->where('type',$type)->with('product_in_receitps.receipt_social');
+
         if ($request->name != null){
             $name = $request->name;
             $GLOBALS['name'] = $name;
             $products = ReceiptProduct::where(function($Q){
                 $Q->where('name','like','%'.$GLOBALS['name'].'%')->orWhere('price','like','%'.$GLOBALS['name'].'%');
-            })->where('type',$type)->orderBy('created_at','desc')->paginate(10);
-        }else{
-            $products = ReceiptProduct::orderBy('created_at','desc')->where('type',$type)->paginate(10);
+            })->where('type',$type)->orderBy('created_at','desc')->with('product_in_receitps.receipt_social');
         }
-        return view('admin.receipts.receipt_products.index', compact('products','name','type'));
+
+        if ($request->from_date != null && $request->to_date != null) {
+            $from_date = strtotime($request->from_date);
+            $to_date = strtotime($request->to_date);
+            $GLOBALS['from_date'] = $from_date;
+            $GLOBALS['to_date'] = $to_date;
+
+            $products = ReceiptProduct::orderBy('created_at','desc')->where('type',$type)->whereHas('product_in_receitps',function($q){
+                return $q->whereBetween('created_at',[date('Y-m-d H:i:s',$GLOBALS['from_date']),date('Y-m-d H:i:s',$GLOBALS['to_date'] + 86399)]);
+            });
+
+            if ($request->name != null){
+                $name = $request->name;
+                $GLOBALS['name'] = $name;
+                $products = $products->where(function($Q){
+                    $Q->where('name','like','%'.$GLOBALS['name'].'%')->orWhere('price','like','%'.$GLOBALS['name'].'%');
+                });
+            }
+        }
+
+        if ($request->has('download')) {
+            return Excel::download(new ReceiptProductExport($products->get()), 'receipt_products.xlsx');
+        }
+        $products = $products->paginate(10);
+        return view('admin.receipts.receipt_products.index', compact('products','name','type','from_date','to_date'));
     }
 
     public function store(Request $request){
