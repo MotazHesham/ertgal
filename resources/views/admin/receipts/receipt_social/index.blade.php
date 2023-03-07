@@ -738,6 +738,7 @@
                             <ul class="dropdown-menu dropdown-menu-right">
                                 <li><a href="{{route('receipt.social.edit', $receipt->id)}}"><i class="fa fa-edit" style="color: #2E86C1"></i> {{__('Add Product')}}</a></li>
                                 <li><a target="_blanc" href="{{route('receipt.social.print_new', $receipt->id)}}"><i class="fa fa-print" style="color: #2ECC71"></i> {{__('Print')}}</a></li>
+                                <li><a href="{{route('receipt.social.duplicate', $receipt->id)}}"><i class="fa fa-clone" style="color: hsl(295, 41%, 45%)"></i> {{__('Duplicate')}}</a></li>
                                 <li><a target="_blanc" href="{{route('receipt.social.print_receive_money', $receipt->id)}}"><i class="fa fa-print" style="color: #3c5e4a"></i> استلام نقدية</a></li>
                                 <li><a onclick="confirm_modal('{{route('receipt.social.destroy', $receipt->id)}}');"><i class="fa fa-trash" style="color: #E74C3C"></i> {{__('Delete')}}</a></li>
                             </ul>

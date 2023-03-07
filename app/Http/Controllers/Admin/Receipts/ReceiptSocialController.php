@@ -26,10 +26,36 @@ use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Storage;
 use App\Imports\ReceiptSocialImport;
 use App\Exports\ReceiptSocialResultsExport;
+use App\Models\Printable;
 
 class ReceiptSocialController extends Controller
 {
     protected $view = 'admin.receipts.receipt_social.';
+
+    public function duplicate($id){
+        $receipt_social = Receipt_Social::findOrFail($id);
+        $new_receipt = $receipt_social->replicate();
+        $last_receipt_social = Receipt_Social::where('receipt_type',$receipt_social->receipt_type)->latest()->first();
+        if($last_receipt_social){
+            $order_num = $last_receipt_social->order_num ? intval(str_replace('#','',strrchr($last_receipt_social->order_num,"#"))) : 0;
+        }else{
+            $order_num = 0;
+        }
+
+        $new_receipt->staff_id = auth()->user()->id;
+        $new_receipt->order_num =  'receipt-' . $last_receipt_social->receipt_type . '#' . ($order_num + 1);
+        $new_receipt->save();
+
+        $receipt_products = Receipt_social_Product::where('receipt_social_id',$receipt_social->id)->get();
+
+        foreach($receipt_products as $row){
+            $new_receipt_product = $row->replicate();
+            $new_receipt_product->receipt_social_id = $new_receipt->id;
+            $new_receipt_product->save();
+        }
+        flash(__('Receipt has been inserted successfully'))->success();
+        return redirect()->route('receipt.social.edit', $new_receipt->id);
+    }
 
     public function excel_files(){
         $excel_files = ExcelFile::all();
@@ -95,18 +121,47 @@ class ReceiptSocialController extends Controller
         return view('admin.receipts.print_receive_money',compact('receipt'));
     }
 
-    public function print($id){
+
+    public function print($id)
+    {
         $receipt_social = Receipt_social::findOrFail($id);
-        $receipt_social->viewed = 1;
-        $receipt_social->save();
-        return view($this->view . 'receipt_social',compact('receipt_social'));
+        $printed = Printable::where('user_id',Auth::id())->where('printable_id',$id)->where('printable_model','App\Models\ReceiptSocial')->first();
+        if($printed){
+            flash('تم الطباعة من قبل')->error();
+            return back();
+        }else{
+            $receipt_social->viewed = 1;
+            $receipt_social->save();
+            if(Auth()->user()->user_type != 'admin'){
+                Printable::create([
+                    'user_id' => Auth::id(),
+                    'printable_id' => $id,
+                    'printable_model' => 'App\Models\ReceiptSocial'
+                ]);
+            }
+        }
+        return view($this->view . 'receipt_social', compact('receipt_social'));
     }
 
-    public function print_new($id){
+    public function print_new($id)
+    {
         $receipt_social = Receipt_social::findOrFail($id);
-        $receipt_social->viewed = 1;
-        $receipt_social->save();
-        return view($this->view . 'new_receipt_social',compact('receipt_social'));
+        $printed = Printable::where('user_id',Auth::id())->where('printable_id',$id)->where('printable_model','App\Models\ReceiptSocial')->first();
+        if($printed){
+            flash('تم الطباعة من قبل')->error();
+            return back();
+        }else{
+            $receipt_social->viewed = 1;
+            $receipt_social->save();
+            if(Auth()->user()->user_type != 'admin'){
+                Printable::create([
+                    'user_id' => Auth::id(),
+                    'printable_id' => $id,
+                    'printable_model' => 'App\Models\ReceiptSocial'
+                ]);
+            }
+        }
+        return view($this->view . 'new_receipt_social', compact('receipt_social'));
     }
 
 

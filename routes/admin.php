@@ -223,6 +223,7 @@ Route::group(['prefix' =>'admin', 'middleware' => ['auth', 'admin']], function()
 			Route::post('/done','ReceiptSocialController@updateDone')->name('receipt.social.done');
 			Route::post('/calling','ReceiptSocialController@updatecalling')->name('receipt.social.calling');
 			Route::get('/print/{id}','ReceiptSocialController@print')->name('receipt.social.print');
+			Route::get('/duplicate/{id}','ReceiptSocialController@duplicate')->name('receipt.social.duplicate');
 			Route::get('/print_new/{id}','ReceiptSocialController@print_new')->name('receipt.social.print_new');
 			Route::get('/print/receive/money/{id}','ReceiptSocialController@print_receive_money')->name('receipt.social.print_receive_money');
 			Route::post('/quickly','ReceiptSocialController@updatequickly')->name('receipt.social.quickly');

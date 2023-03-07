@@ -15,6 +15,7 @@ use App\Models\Country;
 use App\Http\Resources\OrderResource;
 use App\Http\Resources\ReceiptCompanyResource;
 use App\Http\Resources\ReceiptSocialResource;
+use App\Models\Printable;
 use DB;
 use App\Support\Collection;
 use Auth;
@@ -25,19 +26,58 @@ class PlaylistController extends Controller
         $receipt_company = ReceiptCompany::where('order_num',$request->order_num)->first();
 
         if($receipt_company){
-            $receipt_company->viewed = 1;
-            $receipt_company->save();
+            $printed = Printable::where('user_id',Auth::id())->where('printable_id',$receipt_company->id)->where('printable_model','App\Models\ReceiptCompany')->first();
+            if($printed){
+                flash('تم الطباعة من قبل')->error();
+                return back();
+            }else{
+                $receipt_company->viewed = 1;
+                $receipt_company->save();
+                if(Auth()->user()->user_type != 'admin'){
+                    Printable::create([
+                        'user_id' => Auth::id(),
+                        'printable_id' => $receipt_company->id,
+                        'printable_model' => 'App\Models\ReceiptCompany'
+                    ]);
+                }
+            }
             return view('admin.receipts.receipt_company.receipt_company',compact('receipt_company'));
         }else{
             $order = Order::where('code',$request->order_num)->first();
             if($order){
                 $generalsetting = GeneralSetting::first();
+                $printed = Printable::where('user_id',Auth::id())->where('printable_id',$order->id)->where('printable_model','App\Models\Order')->first();
+                if($printed){
+                    flash('تم الطباعة من قبل')->error();
+                    return back();
+                }else{
+                    if(Auth()->user()->user_type != 'admin'){
+                        Printable::create([
+                            'user_id' => Auth::id(),
+                            'printable_id' => $order->id,
+                            'printable_model' => 'App\Models\Order'
+                        ]);
+                    }
+                }
                 return view('admin.orders.print',compact('order','generalsetting'));
             }else{
                 $receipt_social = Receipt_social::where('order_num',$request->order_num)->first();
                 if($receipt_social){
-                    $receipt_social->viewed = 1;
-                    $receipt_social->save();
+                    $printed = Printable::where('user_id',Auth::id())->where('printable_id',$receipt_social->id)->where('printable_model','App\Models\ReceiptSocial')->first();
+                    if($printed){
+                        flash('تم الطباعة من قبل')->error();
+                        return back();
+                    }else{
+                        $receipt_social->viewed = 1;
+                        $receipt_social->save();
+                        if(Auth()->user()->user_type != 'admin'){
+                            Printable::create([
+                                'user_id' => Auth::id(),
+                                'printable_id' => $receipt_social->id,
+                                'printable_model' => 'App\Models\ReceiptSocial'
+                            ]);
+                        }
+                    }
                     return view('admin.receipts.receipt_social.new_receipt_social',compact('receipt_social'));
                 }else{
                     //flash('Not Found')->error();
