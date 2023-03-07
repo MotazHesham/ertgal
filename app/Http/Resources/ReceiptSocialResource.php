@@ -52,6 +52,7 @@ class ReceiptSocialResource extends JsonResource
             'designer_id' => $this->designer_id,
             'preparer_id' => $this->preparer_id,
             'manifacturer_id' => $this->manifacturer_id,
+            'viewed' => $this->viewed,
         ];
     }
 }

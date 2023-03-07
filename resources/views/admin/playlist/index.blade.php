@@ -227,6 +227,7 @@
                             <div class="row">
                                 <div class="col-xs-4 col-md-4">
                                     {{$item['order_num']}}
+                                    @if($item['viewed'] == 0) <span class="pull-right badge badge-info">{{ __('New') }}</span> @endif
                                 </div>
                                 <div class="col-xs-8 col-md-8">
                                     <span class="badge badge-default">{{__('Added By')}}</span>
