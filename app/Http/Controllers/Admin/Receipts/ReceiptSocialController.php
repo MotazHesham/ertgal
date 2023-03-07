@@ -34,7 +34,6 @@ class ReceiptSocialController extends Controller
 
     public function duplicate($id){
         $receipt_social = Receipt_Social::findOrFail($id);
-        $new_receipt = $receipt_social->replicate();
         $last_receipt_social = Receipt_Social::where('receipt_type',$receipt_social->receipt_type)->latest()->first();
         if($last_receipt_social){
             $order_num = $last_receipt_social->order_num ? intval(str_replace('#','',strrchr($last_receipt_social->order_num,"#"))) : 0;
@@ -42,8 +41,23 @@ class ReceiptSocialController extends Controller
             $order_num = 0;
         }
 
+        $new_receipt = new Receipt_Social;
         $new_receipt->staff_id = auth()->user()->id;
         $new_receipt->order_num =  'receipt-' . $last_receipt_social->receipt_type . '#' . ($order_num + 1);
+        $new_receipt->receipt_type = $receipt_social->receipt_type;
+        $new_receipt->client_name = $receipt_social->client_name;
+        $new_receipt->phone = $receipt_social->phone;
+        $new_receipt->phone2 = $receipt_social->phone2;
+        $new_receipt->total = $receipt_social->total;
+        $new_receipt->commission = $receipt_social->commission;
+        $new_receipt->extra_commission = $receipt_social->extra_commission;
+        $new_receipt->note = $receipt_social->note;
+        $new_receipt->shipping_country_cost = $receipt_social->shipping_country_cost;
+        $new_receipt->address = $receipt_social->address;
+        $new_receipt->shipping_country_id = $receipt_social->shipping_country_id;
+        $new_receipt->shipping_country_name = $receipt_social->shipping_country_name;
+        $new_receipt->shipping_country_code = $receipt_social->shipping_country_code;
+        $new_receipt->type = $receipt_social->type;
         $new_receipt->save();
 
         $receipt_products = Receipt_social_Product::where('receipt_social_id',$receipt_social->id)->get();
